@@ -1,3 +1,6 @@
+REQUIRMENTS:
+pip install sqlalchemy psycopg2
+
 FILES:
 data (tables):
     - users

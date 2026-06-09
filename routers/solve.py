@@ -1,42 +1,56 @@
 from fastapi import APIRouter
 from basics import solve_basic
 from equation import solve_equation
+from deco import solve_deco
+from calc_utils import is_num, save_log
 
 router = APIRouter()
 
-OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
 
+
+OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
 def deconstruct(expression:str): 
-    comps = [] # comps => components
     current_comp = ''
+    comps = [] # comps => components
     variable_exists = False
     equal_exists = False
     fixed_expression = expression.replace(' ', '')
     for char in fixed_expression:
+        is_var = False
         if char in '0123456789.':
             current_comp += char
-        elif char.isalpha():
-            current_comp += char.lower()
-            variable_exists = True
         elif char == '-' and len(current_comp) == 0:
             current_comp += char
+        elif char.isalpha():
+            variable_exists = True
+            is_var = True
+            if len(current_comp):
+                if is_num(current_comp):
+                    comps.append(float(current_comp))
+                else:
+                    comps.append(current_comp)
+                current_comp = ''
+                comps.append('*')
+                comps.append(char)
         elif char in OPERATORS + ['(', ')']:
-            comps.append(current_comp)
+            if len(current_comp):
+                if is_num(current_comp):
+                    comps.append(float(current_comp))
+                else: 
+                    comps.append(current_comp)
             current_comp = ''
             comps.append(char)
             if char == '=':
                 equal_exists = True
-        elif char == '(':
-            openings = 0
-            l = ['4', '*', ['1', '+', '1']]
-            
-            '(4*(1+1))'
             
         else:
             raise ValueError()
         
     if len(current_comp):
-        comps.append(current_comp)
+        if not is_var:
+            comps.append(float(current_comp))
+        else: 
+            comps.append(current_comp)
     if comps[-1] in OPERATORS:
         comps.pop()
     if comps[-1] == '=' and '=' not in comps[:-1]:
@@ -56,21 +70,29 @@ def deconstruct(expression:str):
 def solve(expression:str):
     result = 0
     path = []
-    print('TEST')
     print(expression)
     type, comps = deconstruct(expression)
     if type == 'basic':
-        solve_basic(comps)
+        result = solve_basic(comps)
     elif type == 'deco':
-        pass
-    # else:
-        # solve_equation(comps)
-    
-    return {"result": result, "path": path}
-
+        result = solve_deco(comps)
+    else:
+        result = solve_equation(comps)
+    conclusion = {
+        "expression": expression,
+        "result": result,
+        # "path": path,
+        "user_id": 1,
+        "type": type
+    }
+    save_log(conclusion)
+    return conclusion
 
 a = '5-5*5'
-b = "5x+5*5y)="
+b = "5x+5*5y"
 c = "5x+10=50"
 d = '2x**2+5X'
 print(solve(a))
+# print(is_num('2.0x'))
+
+# 5, '*', 'x'
