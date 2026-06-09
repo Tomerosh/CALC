@@ -6,14 +6,13 @@ router = APIRouter()
 
 OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
 
-def deconstruct(equation:str): # equation => expression
+def deconstruct(expression:str): 
     comps = [] # comps => components
     current_comp = ''
-
     variable_exists = False
     equal_exists = False
-    fixed_equation = equation.replace(' ', '')
-    for char in fixed_equation:
+    fixed_expression = expression.replace(' ', '')
+    for char in fixed_expression:
         if char in '0123456789.':
             current_comp += char
         elif char.isalpha():
@@ -47,11 +46,11 @@ def deconstruct(equation:str): # equation => expression
     return type, comps
     
 
-@router.post('/solve/{equation}')
-def solve(equation:str):
+@router.post('/solve/{expression}')
+def solve(expression:str):
     result = 0
     path = []
-    type, comps = deconstruct(equation)
+    type, comps = deconstruct(expression)
     if type == 'basic':
         solve_basic(comps)
     elif type == 'deco':
