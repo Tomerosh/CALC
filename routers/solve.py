@@ -1,12 +1,13 @@
 from fastapi import APIRouter
-from routers.basics import solve_basic
+from basics import solve_basic
+from equation import solve_equation
 
 router = APIRouter()
 
 OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
 
-def deconstruct(equation:str):
-    comps = []
+def deconstruct(equation:str): # equation => expression
+    comps = [] # comps => components
     current_comp = ''
 
     variable_exists = False
@@ -51,15 +52,18 @@ def solve(equation:str):
     result = 0
     path = []
     type, comps = deconstruct(equation)
-    print(type, comps)
     if type == 'basic':
-        solve_basic()
-
+        solve_basic(comps)
+    elif type == 'deco':
+        pass
+    else:
+        solve_equation(comps)
+    
     return {"result": result, "path": path}
 
 
 a = '5 -5*5'
-b = "5x+5*5y)"
-c = "5x+10=50="
+b = "5x+5*5y)="
+c = "5x+10=50"
 d = '2x**2+5X'
 print(solve(c))
