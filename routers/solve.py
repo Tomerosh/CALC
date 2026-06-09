@@ -1,18 +1,18 @@
 from fastapi import APIRouter
-from routers.basics_option_two import solve_basic
+from basics import solve_basic
+from equation import solve_equation
 
 router = APIRouter()
 
 OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
 
-def deconstruct(equation:str):
-    comps = []
+def deconstruct(expression:str): 
+    comps = [] # comps => components
     current_comp = ''
-
     variable_exists = False
     equal_exists = False
-    fixed_equation = equation.replace(' ', '')
-    for char in fixed_equation:
+    fixed_expression = expression.replace(' ', '')
+    for char in fixed_expression:
         if char in '0123456789.':
             current_comp += char
         elif char.isalpha():
@@ -26,6 +26,12 @@ def deconstruct(equation:str):
             comps.append(char)
             if char == '=':
                 equal_exists = True
+        elif char == '(':
+            openings = 0
+            l = ['4', '*', ['1', '+', '1']]
+            
+            '(4*(1+1))'
+            
         else:
             raise ValueError()
         
@@ -46,20 +52,25 @@ def deconstruct(equation:str):
     return type, comps
     
 
-@router.post('/solve/{equation}')
-def solve(equation:str):
+@router.post('/solve/{expression}')
+def solve(expression:str):
     result = 0
     path = []
-    type, comps = deconstruct(equation)
-    print(type, comps)
+    print('TEST')
+    print(expression)
+    type, comps = deconstruct(expression)
     if type == 'basic':
-        solve_basic()
-
+        solve_basic(comps)
+    elif type == 'deco':
+        pass
+    # else:
+        # solve_equation(comps)
+    
     return {"result": result, "path": path}
 
 
-a = '5 -5*5'
-b = "5x+5*5y)"
-c = "5x+10=50="
+a = '5-5*5'
+b = "5x+5*5y)="
+c = "5x+10=50"
 d = '2x**2+5X'
-print(solve(c))
+print(solve(a))
