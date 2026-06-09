@@ -2,7 +2,13 @@ from sqlalchemy import Column, Date, Float, Integer, MetaData, String, Table, Ti
 from sqlalchemy.orm import DeclarativeBase, Mapped, declarative_base, mapped_column
 from sqlalchemy.orm import sessionmaker
 
+# CONSTANTS
+DIGITS = '0123456789.'
+
+
 engine = create_engine("postgresql+psycopg://postgres:2409@localhost:5432/postgres", echo=True)
+
+# CREATE LOG TABLE
 # print(engine.dialect.has_table(engine.connect(), 'log'))
 # if not inspect(engine).has_table('log'):  # If table don't exist, Create.
 #     metadata = MetaData(engine)
@@ -64,5 +70,19 @@ def add_var(var_dict, var, num):
         var_dict[var] = 0
     var_dict[var] += num
 
+def split_num_var(comp):
+    num = ''
+    variable = ''
+    for char in comp:
+        if char in DIGITS or char == '-':
+            num += char
+        else:
+            variable += char
+    return num, variable
+
+            
+            
+
+            
 
 

@@ -1,14 +1,4 @@
-DIGITS = '0123456789.'
-
-'20'
-'20.0'
-'-20'
-'-'
-# 
-def is_num(comp):
-    if comp.isdigit() or '.' in comp or '-' in comp:
-        return True
-    return False
+from calc_utils import is_num, DIGITS
 
 def split_num_var(comp):
     num = ''
@@ -19,6 +9,8 @@ def split_num_var(comp):
         else:
             variable += char
     return num, variable
+
+# def isolate()
 
 def solve_equation(comps: list):
     print('Solving equation')
@@ -32,10 +24,11 @@ def solve_equation(comps: list):
     while i < len(left_side):
         print('i:', i)
         if '^' in left_side: # Power
-            if left_side[i] == '^':
-                if is_num(left_side[i-1]):
-                    if is_num(left_side[i+1]): # Two numbers
-                        left_side[i-1:i+2] = [float(left_side[i-1]) ** float(left_side[i+1])]
+            i = left_side.index('^')
+            if is_num(left_side[i-1]) and is_num(left_side[i+1]): # Two numbers
+                    left_side[i-1:i+2] = [float(left_side[i-1]) ** float(left_side[i+1])]
+            else:
+                left_side[i-1:i+2] = [left_side[i-1] +  '^' + left_side[i+1]]
 
         elif '*' in left_side or '/' in left_side: 
             if left_side[i] == '*':
@@ -80,9 +73,9 @@ def solve_equation(comps: list):
             
         else:
             pass
-            # if is_num(left_side[i]):
-            #     right_side.append('-')
-            #     right_side.append(left_side[i])
+            if is_num(left_side[i]):
+                right_side.append('-')
+                right_side.append(left_side[i])
 
         i+=1
         if i == len(left_side) - 1:
@@ -90,8 +83,8 @@ def solve_equation(comps: list):
         print(left_side)
 
                            
-comps = ['2x', '*', '2', '+', '2x', '=', '4']
-solve_equation(comps)
+# comps = ['2x', '*', '2', '+', '2x', '+', '4', '=', '4']
+# solve_equation(comps)
 
         # if not left_side[i].isdigit():
         #     if i == 0:

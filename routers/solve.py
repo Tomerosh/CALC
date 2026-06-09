@@ -2,7 +2,8 @@ from fastapi import APIRouter
 from basics import solve_basic
 from equation import solve_equation
 from deco import solve_deco
-from calc_utils import is_num, save_log
+from calc_utils import is_num, save_log, DIGITS
+from variable import Variable
 
 router = APIRouter()
 
@@ -26,12 +27,11 @@ def deconstruct(expression:str):
             is_var = True
             if len(current_comp):
                 if is_num(current_comp):
-                    comps.append(float(current_comp))
+                    val = float(current_comp)
                 else:
                     comps.append(current_comp)
                 current_comp = ''
-                comps.append('*')
-                comps.append(char)
+                comps.append(Variable(char, val))
         elif char in OPERATORS + ['(', ')']:
             if len(current_comp):
                 if is_num(current_comp):
@@ -92,7 +92,7 @@ a = '5-5*5'
 b = "5x+5*5y"
 c = "5x+10=50"
 d = '2x**2+5X'
-print(solve(a))
+# print(solve(a))
 # print(is_num('2.0x'))
-
+print(deconstruct(b))
 # 5, '*', 'x'
