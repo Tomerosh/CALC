@@ -26,6 +26,12 @@ def deconstruct(expression:str):
             comps.append(char)
             if char == '=':
                 equal_exists = True
+        elif char == '(':
+            openings = 0
+            l = ['4', '*', ['1', '+', '1']]
+            
+            '(4*(1+1))'
+            
         else:
             raise ValueError()
         
@@ -50,19 +56,21 @@ def deconstruct(expression:str):
 def solve(expression:str):
     result = 0
     path = []
+    print('TEST')
+    print(expression)
     type, comps = deconstruct(expression)
     if type == 'basic':
         solve_basic(comps)
     elif type == 'deco':
         pass
-    else:
-        solve_equation(comps)
+    # else:
+        # solve_equation(comps)
     
     return {"result": result, "path": path}
 
 
-a = '5 -5*5'
+a = '5-5*5'
 b = "5x+5*5y)="
 c = "5x+10=50"
 d = '2x**2+5X'
-print(solve(c))
+print(solve(a))

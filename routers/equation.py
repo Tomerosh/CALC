@@ -1,5 +1,10 @@
 DIGITS = '0123456789.'
 
+'20'
+'20.0'
+'-20'
+'-'
+# 
 def is_num(comp):
     if comp.isdigit() or '.' in comp or '-' in comp:
         return True
@@ -68,8 +73,8 @@ def solve_equation(comps: list):
 
 
                            
-comps = ['2x', '*', '2y', '=', '4']
-solve_equation(comps)          
+comps = ['2', '*' 'x', '*', '2y', '=', '4']
+solve_equation(comps)
 
         # if not left_side[i].isdigit():
         #     if i == 0:
