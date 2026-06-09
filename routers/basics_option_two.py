@@ -1,7 +1,7 @@
  #  יצירת רשימה חדשה, אם זה אופרטור משאירים אותו - אם זה מספר הופכים לפלואט 
-# Create new list
 def solve_basic(raw_components: list):
     solution_steps = []
+    
     working_equation = []
     for component in raw_components:
         if component == '':
