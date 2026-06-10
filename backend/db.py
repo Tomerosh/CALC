@@ -29,11 +29,12 @@ class Base(DeclarativeBase):
 
 class Log(Base):
     __tablename__ = 'log'
+    time: Mapped[Time]
     exp_id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int]
     type: Mapped[str]
     expression: Mapped[str]
-    result: Mapped[float]
+    result: Mapped[str]
     # path: Mapped[list]
 
 Base.metadata.create_all(engine)
@@ -45,6 +46,12 @@ Base.metadata.create_all(engine)
 
 def load_log(user_id):
     pass
+
+
+# save_data(table, data)
+#     if table==users
+#         data['username']
+# load_data()
 def save_log(conclusion:dict):
     session.add(Log(
         user_id= conclusion['user_id'],

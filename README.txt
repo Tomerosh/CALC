@@ -1,45 +1,51 @@
-REQUIRMENTS:
-pip install sqlalchemy psycopg2
+* BACKEND *
+DEPENDENCIES:
+fastapi
+uvicorn
+sqlalchemy 
+psycopg2
+
+
+Endpoints:
+GET/ # Home page
+POST/login # User register
+POST/register # User register
+GET/{username} # Show profile
+POST/solve/{expression} # Solve expression
 
 FILES:
-data (tables):
-    - users
-    - log
-BACKEND:
-server.py
-router:
+-calc:
+    -basics.py
+    -calc_utils.py
+    -deco.py
+    -equation.py
+    -variable.py
+-router:
     -user.py 
-        /login
-        /register -save_data('users', {"username": "aviv", "password":123})
-        /{username} # Show profile
-    -logic.py
-        /basic_math -save_data('log', {"equation": x+2})
-        /equation
-        /decompoition
+        POST/login
+        POST/register 
+        GET/{username} 
+    -solve.py
+        POST/solve/{expression}
+-db.py
+    -save_data()
+    -load_data()
+-server.py
+    GET/ # Home page
 
-        components()
-    -util
-        save_data(table, data)
-            if table==users
-                data['username']
-        load_data()
+DATA TABLES:
+    - users
+        - user_id: Integer
+        - username: String
+        - hashed_password: String
+    - log
+        - exp_id: Integer
+        - user_id: Integer
+        - expression: String
+        - type: String
+        - time: Time
+        - result: String
 
 
 
-# Questions
-# תרגילים מסוגים מוגדרים מראש: היוזר בוחר סוג תרגיל לפני שמזין את התרגיל ?
-# פרופיל אישי- פרטי המשתמש או הפעולות שביצע?
-# אבטחה - סיסמא בכל פעולה או טוקן?
-# ספרייה רלוונטית? האם כדאי להשתמש בsympy כי הוא מראה את הפתרון הסופי בלבד. 
-# הצגת שלבי הפתרון: כמה להראות ?
-2x + 1 + 6 + 4x
-6x + 7
-או
-2x + 1 + 6 + 4x
-2x + 7 + 4x
-6x + 7
 
-# בהרחבות: גרף התקדמות - לתת "נקודות" למשתמש על כל תשובה נכונה ?
-# המלצה על נושאים לתרגול לפי הצלחות של המשתמש ?
-
-# איזה עוד סוגי תרגילים ? שברים, אחוזים
