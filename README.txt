@@ -1,10 +1,13 @@
+|CALCULATOR++|
+a Backend middle project for CyberPro Full-Stack Course
+Created by: Aviv Woloss & Tomer Oshri
+
 * BACKEND *
 DEPENDENCIES:
 fastapi
 uvicorn
 sqlalchemy 
 psycopg2
-
 
 Endpoints:
 GET/ # Home page

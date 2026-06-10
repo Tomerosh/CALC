@@ -41,7 +41,6 @@ def solve_equation(comps: list):
                 path.append({"expression": result,
                              "description": f"Powers Operated"})
                     
-
         elif '*' in left_side or '/' in left_side: 
             if left_side[i] == '*':
                 print('*')
@@ -95,10 +94,12 @@ def solve_equation(comps: list):
         print(left_side)
 
 comps = [Variable('x'), '^', 2 , '+' , 4]
+x = Variable('x')
+result = x * 2
+if result:
 
-e = power_exp(comps)
-print_expression(e)
-print('\n', e[0].power)
+print()
+# print('\n', e[0].power)
 
 # comps = ['2x', '*', '2', '+', '2x', '+', '4', '=', '4']
 # solve_equation(comps)

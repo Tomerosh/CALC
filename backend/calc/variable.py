@@ -1,4 +1,3 @@
-
 class Variable():
     def __init__(self, name, value=1, power=1):
         self.name:str = name
@@ -7,7 +6,6 @@ class Variable():
 
     # Print
     def __str__(self):
-        
         val = ''
         if self.value != 1: 
             if self.value.is_integer():
@@ -16,6 +14,11 @@ class Variable():
                 val = str(self.value)
         pow = '^' + str(self.power) if self.power != 1 else ''
         return val + self.name + pow
+    
+    def __eq__(self, other):
+        if isinstance(other, Variable):
+            return self.name == other.name and self.power == other.power
+        return False
     
     # Addition
     def __add__(self, other):
@@ -62,18 +65,13 @@ class Variable():
                 power = self.power ** float(other)
 
             return Variable(self.name, self.value, power)
-        
-    def __eq__(self, other):
-        if isinstance(other, Variable):
-            return self.name == other.name and self.power == other.power
-        return False
     
 # print(type(Variable('x', '2', 1).value))
 # print(Variable('x', 2) + Variable('x', 3, 2))
         
-import sympy
+# import sympy
 
-x, y = sympy.symbols('x y')
+# x, y = sympy.symbols('x y')
 
 # exp = 2 * x * 4 * x
 
@@ -81,7 +79,7 @@ a = Variable('x', 4, -2)
 # b = Variable('x', 1, -5)
 # print(a**2)
 
-print(a**2)
-print(4*x**-2**2)
+# print(a**2)
+# print(4*x**-2**2)
 
 
