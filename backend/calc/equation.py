@@ -1,4 +1,5 @@
-from calc_utils import is_num, DIGITS
+from calc_utils import is_num, DIGITS, print_expression
+from variable import Variable
 
 def split_num_var(comp):
     num = ''
@@ -15,10 +16,10 @@ def power_exp(comps):
     i = -1
     powers_count = comps.count('^')
     for j in range(powers_count):
-        i = comps[i+1:].index('^')
+        i = comps.index('^', i+1)
         result = comps[i-1] ** comps[i+1]
         if result:
-            new_comps = comps[:i-1] + result + comps[i+max(2, len(comps)-1)]
+            new_comps = comps[:i-1] + [result] + comps[i+min(2, len(comps)-1):]
     return new_comps
 
 
@@ -37,7 +38,8 @@ def solve_equation(comps: list):
             result = power_exp(left_side)
             if result:
                 left_side = result
-                path.append({"expression": f'{left_side[:i-1] + result + left_side[i+max(2, len(left_side))]}'})
+                path.append({"expression": result,
+                             "description": f"Powers Operated"})
                     
 
         elif '*' in left_side or '/' in left_side: 
@@ -92,7 +94,12 @@ def solve_equation(comps: list):
             i = 0
         print(left_side)
 
-                           
+comps = [Variable('x'), '^', 2 , '+' , 4]
+
+e = power_exp(comps)
+print_expression(e)
+print('\n', e[0].power)
+
 # comps = ['2x', '*', '2', '+', '2x', '+', '4', '=', '4']
 # solve_equation(comps)
 

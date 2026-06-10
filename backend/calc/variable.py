@@ -1,7 +1,6 @@
-# import sympy
 
 class Variable():
-    def __init__(self, name, value, power=1):
+    def __init__(self, name, value=1, power=1):
         self.name:str = name
         self.value:float = float(value)
         self.power:float = float(power)
@@ -57,7 +56,12 @@ class Variable():
         if isinstance(other, Variable): # Power of another var
             pass
         else:
-            return Variable(self.name, self.value, self.power ** float(other))
+            if self.power == 1:
+                power = self.power + float(other)
+            else :
+                power = self.power ** float(other)
+
+            return Variable(self.name, self.value, power)
         
     def __eq__(self, other):
         if isinstance(other, Variable):
@@ -65,17 +69,19 @@ class Variable():
         return False
     
 # print(type(Variable('x', '2', 1).value))
-print(Variable('x', 2) + Variable('x', 3, 2))
+# print(Variable('x', 2) + Variable('x', 3, 2))
         
-# a = Variable('x', 1, 10)
-# b = Variable('x', 1, -5)
+import sympy
 
-# x, y = sympy.symbols('x y')
+x, y = sympy.symbols('x y')
 
 # exp = 2 * x * 4 * x
 
+a = Variable('x', 4, -2)
+# b = Variable('x', 1, -5)
 # print(a**2)
 
-# print(x ** 10 ** 2 )
+print(a**2)
+print(4*x**-2**2)
 
 

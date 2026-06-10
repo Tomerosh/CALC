@@ -7,6 +7,9 @@ OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
 #     '+':
 # }
 
+def print_expression(exp):
+    for comp in exp:
+        print(comp, end='')
 
 def is_num(comp:str):
     if isinstance(comp, float):
