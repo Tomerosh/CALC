@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-form backend import users_utils
+from backend import users_utils
 router = APIRouter()
 
 @router.get('/{username}')
@@ -8,7 +8,7 @@ def get_user():
 
 
 @router.post('/{username}:{password}')
-def log_in():
+def log_in(username, password):
     if {username} not in user_db:
         return{"massage" : "The user dosen't exsist"}
     else:
@@ -19,7 +19,7 @@ def log_in():
 
 
 @router.post('/{username}:{password}')
-def register():
+def register(username, password):
     if {username} in user_db:
         return{"massage" : "The user already exsist"}
     else:
