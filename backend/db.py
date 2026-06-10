@@ -31,7 +31,7 @@ class Base(DeclarativeBase):
 
 class Log(Base):
     __tablename__ = 'log'
-    time: Mapped[Time]
+    # time: Mapped[Time]
     exp_id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int]
     type: Mapped[str]
@@ -60,11 +60,11 @@ def save_log(conclusion:object):
     session.add(log)
     session.commit()
     
-log = Log(
-    user_id= conclusion['user_id'],
-    expression= conclusion['expression'],
-    type= conclusion['type'],
-    result= conclusion['result'],
-)
+# log = Log(
+#     user_id= conclusion['user_id'],
+#     expression= conclusion['expression'],
+#     type= conclusion['type'],
+#     result= conclusion['result'],
+# )
 
-save_log(log)
+# save_log(log)

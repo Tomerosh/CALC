@@ -1,8 +1,6 @@
+from calc.terms import Variable, Number
 
 # CONSTANTS
-from terms import Number, Variable
-
-
 DIGITS = '0123456789.'
 OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
 
@@ -13,6 +11,7 @@ OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
 def print_expression(exp):
     for comp in exp:
         print(comp, end='')
+    print('')
 
 def is_num(comp:str):
     if isinstance(comp, float):
@@ -35,7 +34,12 @@ def split_num_var(comp):
             variable += char
     return num, variable
 
-
+def brackets(components):
+    close = components.index(')')
+    open = close - components[close::-1].index('(')
+    sub_comps = components[open+1:close]
+    return sub_comps, open, close+1
+    
 def deconstruct(expression:str): 
     current_comp = ''
     comps = [] # comps => components

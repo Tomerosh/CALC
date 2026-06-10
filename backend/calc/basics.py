@@ -1,9 +1,4 @@
-def brackets(components):
-    close = components.index(')')
-    open = close - components[close::-1].index('(')
-    sub_comps = components[open+1:close]
-    return sub_comps, open, close+1
-    
+from calc.calc_utils import brackets
 
 def solve_basic(comps):
     components = comps.copy()

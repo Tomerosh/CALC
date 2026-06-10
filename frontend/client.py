@@ -1,8 +1,5 @@
-# import requests
+import requests
 
-MENU = ['Basic Math', 'Equation', 'Decomposition']
-print("|MENU|")
-for i in range(len(MENU)):
-    print(f'{i+1}. {MENU[i]}')
-selection = input('Enter Selection: ')
-selection = input('Enter Targil: ')
+exp = input('Enter expression: ')
+response = requests.post(f'http://127.0.0.1:8000/solve/{exp}')
+print(response.json())

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from routers import user
-from routers import solve
+import user
+import solve
 
 app = FastAPI()
 
