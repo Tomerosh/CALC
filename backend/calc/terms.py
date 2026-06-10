@@ -66,6 +66,45 @@ class Variable():
 
             return Variable(self.name, self.value, power)
     
+
+class Number():
+    def __init__(self, value):
+        self.value = value
+
+    def __add__(self, other):
+        if isinstance(other, Number):
+            return Number(self.value + other.value)
+        elif isinstance(other, Variable):
+            return False
+        
+    def __sub__(self, other):
+        if isinstance(other, Number):
+            return Number(self.value - other.value)
+        elif isinstance(other, Variable):
+            return False
+        
+    def __mul__(self, other):
+        if isinstance(other, Number):
+            return Number(self.value * other.value)
+        elif isinstance(other, Variable):
+            return other * self
+        
+    def __truediv__(self, other):
+        if isinstance(other, Number):
+            return Number(self.value / other.value)
+        elif isinstance(other, Variable):
+            return Variable(other.name, self.value / other.value, other.power)
+        
+    def __float__(self):
+        return float(self.value)
+
+# b = Variable('x', 1, -5)
+# print(a**2)
+
+# print(a**2)
+# print(4*x**-2**2)
+
+
 # print(type(Variable('x', '2', 1).value))
 # print(Variable('x', 2) + Variable('x', 3, 2))
         
@@ -75,11 +114,9 @@ class Variable():
 
 # exp = 2 * x * 4 * x
 
-a = Variable('x', 4, -2)
-# b = Variable('x', 1, -5)
-# print(a**2)
-
-# print(a**2)
-# print(4*x**-2**2)
-
-
+a = Variable('x', 4)
+# b = Variable('x', 2)
+# c = 'a'
+num = Number(2)
+result = (2 / a)
+print(result)

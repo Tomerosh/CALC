@@ -1,9 +1,15 @@
+def brackets(components):
+    close = components.index(')')
+    open = close - components[close::-1].index('(')
+    sub_comps = components[open+1:close]
+    return sub_comps, open, close+1
+    
+
 def solve_basic(comps):
     components = comps.copy()
     while '(' in components:
-        close = components.index(')')
-        open = close - components[close::-1].index('(')
-        components[open:close+1] = [operate(components[open+1:close])]
+        sub_comps, start, stop = brackets(components)
+        components[start:stop] = [operate(sub_comps)]
     components = operate(components)
     return components
 
@@ -28,3 +34,4 @@ def operate(components):
             i = 0
 
     return components[0]
+

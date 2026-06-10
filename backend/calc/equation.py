@@ -1,5 +1,5 @@
 from calc_utils import is_num, DIGITS, print_expression
-from variable import Variable
+from terms import Variable
 
 def split_num_var(comp):
     num = ''
@@ -95,8 +95,6 @@ def solve_equation(comps: list):
 
 comps = [Variable('x'), '^', 2 , '+' , 4]
 x = Variable('x')
-result = x * 2
-if result:
 
 print()
 # print('\n', e[0].power)

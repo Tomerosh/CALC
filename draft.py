@@ -1,4 +1,4 @@
-from variable import Variable
+from terms import Variable
 
 def print_expression(exp):
     for comp in exp:
