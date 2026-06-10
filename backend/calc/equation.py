@@ -12,14 +12,13 @@ def power_exp(comps):
             new_comps = comps[:i-1] + [result] + comps[i+min(2, len(comps)-1):]
     return new_comps
 
-
-# def isolate()
+# Solve equation logic
 def solve_equation(comps: list):
     print('Solving equation')
-    path = []
+    path = [] # path memory
+    # Split list at '='
     equal_index = comps.index('=')
     left_side = comps[:equal_index]
-    left = left_side.copy
     right_side = comps[equal_index+1:]
 
     def calc_side(side, side_name):
@@ -34,22 +33,24 @@ def solve_equation(comps: list):
                 pass
                 # power_ignore +=1
         elif '*' in side or '/' in side:
-                for i in range(len(side)):
+                i = 0
+                while i < len(side):
                     if side[i] == '*':
                         result = side[i-1] * side[i+1]
                         if result:
                             side[i-1:i+2] = [result]
                             path.append({"expression": result,
-                                        "description": f"Multiple Operated"})
+                                        "description": f"Multiply {side[i-1]} & {side[i+1]}"})
                             print(path[-1]['description'])
                     elif side[i] == '/':
                         result = side[i-1] / side[i+1]
                         if result:
-                            side[i-1:i+2] = [result]
                             path.append({"expression": result,
-                                        "description": f"Multiple Operated"})
+                                        "description": f"Divide {side[i-1]} & {side[i+1]}"})
                             print(path[-1]['description'])
-        else:
+                            side[i-1:i+2] = [result]
+                    i+=1
+        else: # 2x+4+4x=2+5x*10
             running = True
             i = 0
             while running:
@@ -110,12 +111,16 @@ def solve_equation(comps: list):
                         if i != 0:
                             if side[i-1] == '+':
                                 right_side.append(side[i]*(-1))
-                                side.pop(i)
-                                side.pop(i)
+                                side.pop(i-1)
+                                side.pop(i-1)
                             elif side[i] == '-':
                                 right_side.append(side[i]*(-1)*(-1))
-                                side.pop(i)
-                                side.pop(i)
+                                side.pop(i-1)
+                                side.pop(i-1)
+                        elif i == len(side) -1 :
+                            right_side.append(side[i]*(-1))
+                            side.pop(i-1)
+                            side.pop(i-1)
                         else:
                             right_side.append(side[i]*(-1))
                             side.pop(i)
@@ -163,7 +168,6 @@ def solve_equation(comps: list):
     #     sub_comps, start, stop = brackets(left_side)
     #     left_side[start:stop] = [operate(sub_comps)]
     while len(left_side) > 1 or len(right_side) > 1:
-        print('TEST')
         if len(left_side) > 1:
             left_side = calc_side(left_side, 'left')
         if len(right_side) > 1:
