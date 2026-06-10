@@ -10,25 +10,35 @@ def split_num_var(comp):
             variable += char
     return num, variable
 
-# def isolate()
+def power_exp(comps):
+    new_comps = []
+    i = -1
+    powers_count = comps.count('^')
+    for j in range(powers_count):
+        i = comps[i+1:].index('^')
+        result = comps[i-1] ** comps[i+1]
+        if result:
+            new_comps = comps[:i-1] + result + comps[i+max(2, len(comps)-1)]
+    return new_comps
 
+
+# def isolate()
 def solve_equation(comps: list):
     print('Solving equation')
+    path = []
     equal_index = comps.index('=')
     left_side = comps[:equal_index]
-    print(left_side)                    
-
     right_side = comps[equal_index+1:]
     i = 0
-    # 4 + x + 3
-    while i < len(left_side):
+    running = True
+    while running:
         print('i:', i)
         if '^' in left_side: # Power
-            i = left_side.index('^')
-            if is_num(left_side[i-1]) and is_num(left_side[i+1]): # Two numbers
-                    left_side[i-1:i+2] = [float(left_side[i-1]) ** float(left_side[i+1])]
-            else:
-                left_side[i-1:i+2] = [left_side[i-1] +  '^' + left_side[i+1]]
+            result = power_exp(left_side)
+            if result:
+                left_side = result
+                path.append({"expression": f'{left_side[:i-1] + result + left_side[i+max(2, len(left_side))]}'})
+                    
 
         elif '*' in left_side or '/' in left_side: 
             if left_side[i] == '*':

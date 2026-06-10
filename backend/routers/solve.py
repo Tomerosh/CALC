@@ -2,14 +2,11 @@ from fastapi import APIRouter
 from basics import solve_basic
 from equation import solve_equation
 from deco import solve_deco
-from calc_utils import is_num, save_log, DIGITS
+from calc_utils import is_num, save_log, DIGITS, OPERATORS
 from variable import Variable
 
 router = APIRouter()
 
-
-
-OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
 def deconstruct(expression:str): 
     current_comp = ''
     comps = [] # comps => components

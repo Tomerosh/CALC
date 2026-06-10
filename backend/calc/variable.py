@@ -22,14 +22,14 @@ class Variable():
     def __add__(self, other):
         if isinstance(other, Variable):
             if self == other:
-                return True, Variable(self.name, self.value + other.value, self.power)
+                return Variable(self.name, self.value + other.value, self.power)
         return False
         
     # Substract
     def __sub__(self, other):
         if isinstance(other, Variable):
             if self == other:
-                return True, Variable(self.name, self.value - other.value, self.power)
+                return Variable(self.name, self.value - other.value, self.power)
         return False
 
     # Multiply
@@ -64,7 +64,8 @@ class Variable():
             return self.name == other.name and self.power == other.power
         return False
     
-print(type(Variable('x', '2', 1).value))
+# print(type(Variable('x', '2', 1).value))
+print(Variable('x', 2) + Variable('x', 3, 2))
         
 # a = Variable('x', 1, 10)
 # b = Variable('x', 1, -5)
