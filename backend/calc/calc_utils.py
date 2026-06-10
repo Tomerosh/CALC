@@ -1,6 +1,6 @@
 
 # CONSTANTS
-from variable import Variable
+from terms import Number, Variable
 
 
 DIGITS = '0123456789.'
@@ -35,12 +35,6 @@ def split_num_var(comp):
             variable += char
     return num, variable
 
-            
-            
-
-            
-
-
 
 def deconstruct(expression:str): 
     current_comp = ''
@@ -54,22 +48,19 @@ def deconstruct(expression:str):
             current_comp += char
         elif char == '-' and len(current_comp) == 0:
             current_comp += char
-        elif char.isalpha():
+        elif char.isalpha(): # 2x + 1
             variable_exists = True
             is_var = True
             if len(current_comp):
-                if is_num(current_comp):
-                    val = float(current_comp)
-                else:
-                    comps.append(current_comp)
+                val = current_comp
                 current_comp = ''
                 comps.append(Variable(char, val))
         elif char in OPERATORS + ['(', ')']:
             if len(current_comp):
                 if is_num(current_comp):
-                    comps.append(float(current_comp))
+                    comps.append(Number(current_comp))
                 else: 
-                    comps.append(current_comp)
+                    comps.append(Variable(current_comp))
             current_comp = ''
             comps.append(char)
             if char == '=':
@@ -80,12 +71,13 @@ def deconstruct(expression:str):
         
     if len(current_comp):
         if not is_var:
-            comps.append(float(current_comp))
+            comps.append(Number(current_comp))
         else: 
-            comps.append(current_comp)
+            comps.append(Variable(current_comp))
     if comps[-1] in OPERATORS:
         comps.pop()
     if comps[-1] == '=' and '=' not in comps[:-1]:
+        comps.pop()
         equal_exists = False
 
 
