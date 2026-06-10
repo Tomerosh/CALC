@@ -59,6 +59,9 @@ def deconstruct(expression:str):
                 val = current_comp
                 current_comp = ''
                 comps.append(Variable(char, val))
+            else:
+                comps.append(Variable(char))
+
         elif char in OPERATORS + ['(', ')']:
             if len(current_comp):
                 if is_num(current_comp):
