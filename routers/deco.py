@@ -1,1 +1,0 @@
-def solve_deco(raw_components: list):
