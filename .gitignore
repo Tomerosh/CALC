@@ -1,2 +1,2 @@
-backend/calc/__pycache__/
-backend/calc/.vscode/
+__pycache__/
+.vscode/
