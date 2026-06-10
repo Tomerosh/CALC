@@ -4,10 +4,14 @@ from calc.terms import Variable, Number
 DIGITS = '0123456789.'
 OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
 
-# OPERATION = {
-#     '+':
-# }
+# Join components to string
+def join_exp(comps):
+    exp = ''
+    for com in comps:
+        exp += str(com) 
+    return exp
 
+#DELETE#
 def print_expression(exp):
     for comp in exp:
         print(comp, end='')
@@ -24,22 +28,26 @@ def add_var(var_dict, var, num):
         var_dict[var] = 0
     var_dict[var] += num
 
-def split_num_var(comp):
-    num = ''
-    variable = ''
-    for char in comp:
-        if char in DIGITS or char == '-':
-            num += char
-        else:
-            variable += char
-    return num, variable
-
+# Find the most inner brackets
+# Returns sub_list of components, start and stop indexes in og list
 def brackets(components):
     close = components.index(')')
     open = close - components[close::-1].index('(')
     sub_comps = components[open+1:close]
     return sub_comps, open, close+1
     
+# Operate all Powers (**) in expression
+def power_exp(comps:list):
+    new_comps = []
+    i = -1
+    powers_count = comps.count('^')
+    for j in range(powers_count):
+        i = comps.index('^', i+1)
+        result = comps[i-1] ** comps[i+1]
+        if result:
+            new_comps = comps[:i-1] + [result] + comps[i+min(2, len(comps)-1):]
+    return new_comps
+
 def deconstruct(expression:str): 
     current_comp = ''
     comps = [] # comps => components

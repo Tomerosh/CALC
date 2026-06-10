@@ -136,23 +136,3 @@ class Number():
     def __float__(self):
         return float(self.value)
 
-# b = Variable('x', 1, -5)
-# print(a**2)
-
-# print(a**2)
-# print(4*x**-2**2)
-
-
-# print(type(Variable('x', '2', 1).value))
-# print(Variable('x', 2) + Variable('x', 3, 2))
-        
-# import sympy
-
-# x, y = sympy.symbols('x y')
-
-# exp = 2 * x * 4 * x
-
-# a = Variable('x', 4)
-# # b = Variable('x', 2)
-# # c = 'a'
-# num = Number(2)

@@ -17,15 +17,14 @@ def solve(expression:str):
     path = []
     print(expression)
     type, comps = deconstruct(expression)
-    print(comps)
     if type == 'basic':
         result = solve_basic(comps)
     elif type == 'deco':
         result = solve_deco(comps)
     else:
         path, result = solve_equation(comps)
-        # result = 0
     conclusion = {
+
         "expression": expression,
         "result": result,
         "path": path,
@@ -57,3 +56,24 @@ g = '2x+3*8+4x*5=5x/2+6x*2/3'
 # print(is_num('2.0x'))
 test(g)
 # 5, '*', 'x'
+
+# b = Variable('x', 1, -5)
+# print(a**2)
+
+# print(a**2)
+# print(4*x**-2**2)
+
+
+# print(type(Variable('x', '2', 1).value))
+# print(Variable('x', 2) + Variable('x', 3, 2))
+        
+# import sympy
+
+# x, y = sympy.symbols('x y')
+
+# exp = 2 * x * 4 * x
+
+# a = Variable('x', 4)
+# # b = Variable('x', 2)
+# # c = 'a'
+# num = Number(2)

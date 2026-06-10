@@ -1,4 +1,4 @@
-from calc.calc_utils import brackets, DIGITS, join_exp, power_exp
+from calc.calc_utils import brackets, DIGITS, join_exp, power_exp, print_expression
 from calc.terms import Number, Variable
 
 # Solve equation logic
@@ -37,10 +37,7 @@ def solve_equation(comps:list):
                     if result:
                         description = f"Multiply {side[i-1]} * {side[i+1]}"
                         side[i-1:i+2] = [result]
-                        if side_name == 'left':
-                            expression = join_exp(side + ['='] + right_side)
-                        else:
-                            expression =  join_exp(left_side + ['='] + side)
+                        expression = join_exp(side + ['='] + right_side)
                         path.append({"expression": expression,
                                     "description": description})
 
@@ -48,19 +45,21 @@ def solve_equation(comps:list):
                     result = side[i-1] / side[i+1]
                     if result:
                         description = f"Divide {side[i-1]} / {side[i+1]}"
+                        expression = result
                         side[i-1:i+2] = [result]
-                        if side_name == 'left':
-                            expression = join_exp(side + ['='] + right_side)
-                        else:
-                            expression =  join_exp(left_side + ['='] + side)
+                        expression = join_exp(side + ['='] + right_side)
                         path.append({"expression": expression,
                                     "description": description})
                 i+=1
+                # print(expression)
+                # print(description)
                     
         else: 
             running = True
             i = 0
             while running:
+                print(path)
+                # print('i =', i)
                 # Finish loop when only 1 component left
                 if len(side) == 1:
                     return side
@@ -72,18 +71,23 @@ def solve_equation(comps:list):
                     for j in range(len(sub)):
                         # Check if comp is a var
                         if isinstance(sub[j], Variable):
+                            print('TEST')
+                            print('i', i, 'j', j)
                             if j != 0:
                                 # Perform Addition
                                 if sub[j-1] == '+':
                                     description = f"Combined var {sub[j].name}"
                                     # Update comp list
                                     side[i] = side[i] + sub[j]
+                                    print('TEST')
+                                    print(side)
+                                    print(sub)
+                                    print(side[i], '+', sub[j])
                                     side.pop(i+j)
                                     side.pop(i+j)
-                                    if side_name == 'left':
-                                        expression = join_exp(side + ['='] + right_side)
-                                    else:
-                                        expression =  join_exp(left_side + ['='] + side)
+                                    
+
+                                    expression = str(side + ['='] + right_side) if side_name == 'left' else str(left_side + ['='] + side)
                                     path.append({"expression": expression,
                                                 "description": description})
                                     break
@@ -93,11 +97,7 @@ def solve_equation(comps:list):
                                     side[i] = side[i] - sub[j]
                                     side.pop(i+j)
                                     side.pop(i+j)
-                                    if side_name == 'left':
-                                        expression = join_exp(side + ['='] + right_side)
-                                    else:
-                                        expression =  join_exp(left_side + ['='] + side)
-                                    path.append({"expression": expression,
+                                    path.append({"expression": str(side + ['='] + right_side) if side_name == 'left' else str(left_side + ['='] + side),
                                                 "description": f"Substracted var {sub[j].name}"})
                                     break
                             else:
@@ -106,10 +106,7 @@ def solve_equation(comps:list):
                                 side[i] = side[i] + sub[j]
                                 side.pop(i+j)
                                 side.pop(i+j)
-                                if side_name == 'left':
-                                    expression = join_exp(side + ['='] + right_side)
-                                else:
-                                    expression =  join_exp(left_side + ['='] + side)
+                                expression = str(side + ['='] + right_side) if side_name == 'left' else str(left_side + ['='] + side)
                                 path.append({"expression": expression,
                                             "description": description})
                                 break
@@ -126,23 +123,15 @@ def solve_equation(comps:list):
                                 side.pop(i+j)
                                 side.pop(i+j)
                                 sub = sub[:j-1] + sub[j+1:]
-                                if side_name == 'left':
-                                    expression = join_exp(side + ['='] + right_side)
-                                else:
-                                    expression =  join_exp(left_side + ['='] + side)
-                                path.append({"expression": expression,
+                                path.append({"expression": str(side + ['='] + right_side) if side_name == 'left' else str(left_side + ['='] + side),
                                             "description": f"Add numbers"})
 
                             elif sub[j-1] == '-':
                                 side[i] = side[i] - sub[j]
                                 side.pop(i+j)
                                 side.pop(i+j)
-                                if side_name == 'left':
-                                    expression = join_exp(side + ['='] + right_side)
-                                else:
-                                    expression =  join_exp(left_side + ['='] + side)
-                                    path.append({"expression": expression,
-                                                "description": f"Substracted numbers"})
+                                path.append({"expression": str(side + ['='] + right_side) if side_name == 'left' else str(left_side + ['='] + side),
+                                            "description": f"Substracted numbers"})
 
                         j+= 1
                 if len(side) == 1:
@@ -166,11 +155,7 @@ def solve_equation(comps:list):
                         else:
                             right_side.append(side[i]*(-1))
                             side.pop(i)
-                            if side_name == 'left':
-                                expression = join_exp(side + ['='] + right_side)
-                            else:
-                                expression = join_exp(left_side + ['='] + side)
-                        path.append({"expression":  expression,
+                        path.append({"expression": str(side + ['='] + right_side) if side_name == 'left' else str(left_side + ['='] + side),
                                     "description": f"Moved Number to right side"})
                 elif side_name == 'right':
                     if isinstance(side[i], Variable):
@@ -193,7 +178,7 @@ def solve_equation(comps:list):
                             side.pop(i)
                             side.pop(i)
                         
-                        path.append({"expression": join_exp(left_side + ['='] + side),
+                        path.append({"expression": str(left_side + ['='] + side),
                                     "description": f"Moved Number to left side"})
                 if len(side) == 1:
                     return side
@@ -209,6 +194,7 @@ def solve_equation(comps:list):
 
                    
     while len(left_side) > 1 or len(right_side) > 1:
+        print(path)
         if len(left_side) > 1:
             left_side = calc_side(left_side, 'left')
         if len(right_side) > 1:
