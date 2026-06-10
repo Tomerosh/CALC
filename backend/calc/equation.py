@@ -29,6 +29,7 @@ def solve_equation(comps: list):
                 path.append({"expression": result,
                             "description": f"Powers Operated"})
                 print(path[-1]['description'])
+                print(path[-1]['expression'])
             else:
                 pass
                 # power_ignore +=1
@@ -42,12 +43,14 @@ def solve_equation(comps: list):
                             path.append({"expression": result,
                                         "description": f"Multiply {side[i-1]} & {side[i+1]}"})
                             print(path[-1]['description'])
+                            print(path[-1]['expression'])
                     elif side[i] == '/':
                         result = side[i-1] / side[i+1]
                         if result:
                             path.append({"expression": result,
                                         "description": f"Divide {side[i-1]} & {side[i+1]}"})
                             print(path[-1]['description'])
+                            print(path[-1]['expression'])
                             side[i-1:i+2] = [result]
                     i+=1
         else: # 2x+4+4x=2+5x*10
@@ -98,10 +101,10 @@ def solve_equation(comps: list):
                                 side[i] = side[i] - sub[j]
                                 side.pop(i+j)
                                 side.pop(i+j)
-                                print(path[-1]['description'])
-                                print(path[-1]['expression'])
                                 path.append({"expression": str(side + ['='] + right_side) if side_name == 'left' else str(left_side + ['='] + side),
                                             "description": f"Substracted numbers"})
+                                print(path[-1]['description'])
+                                print(path[-1]['expression'])
                         j+= 1
                 if len(side) == 1:
                     return side
@@ -124,10 +127,10 @@ def solve_equation(comps: list):
                         else:
                             right_side.append(side[i]*(-1))
                             side.pop(i)
-                        print(path[-1]['description'])
-                        print(path[-1]['expression'])
                         path.append({"expression": str(side + ['='] + right_side) if side_name == 'left' else str(left_side + ['='] + side),
                                     "description": f"Moved Number to right side"})
+                        print(path[-1]['description'])
+                        print(path[-1]['expression'])
                 elif side_name == 'right':
                     if isinstance(side[i], Variable):
                         left_side.append('+')
@@ -148,10 +151,10 @@ def solve_equation(comps: list):
                         else:
                             left_side.append(side[i]*(-1))
                             side.pop(i)
-                        print(path[-1]['description'])
-                        print(path[-1]['expression'])
                         path.append({"expression": str(left_side + ['='] + side),
                                     "description": f"Moved Number to right side"})
+                        print(path[-1]['description'])
+                        print(path[-1]['expression'])
                 if len(side) == 1:
                     return side
                 if side[0] == '+':
