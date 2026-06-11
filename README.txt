@@ -13,10 +13,10 @@ pip install fastapi uvicorn sqlalchemy "psycopg[binary]"
 
 Endpoints:
 GET/ # Home page
-POST/login # User register
-POST/register # User register
-GET/{username} # Show profile
+POST/login # login
+POST/sign_up # sign up
 POST/solve/{expression} # Solve expression
+GET/{username} # Show profile
 
 FILES:
 -calc:
