@@ -5,8 +5,7 @@ from fastapi import APIRouter
 # from db import save_log
 from db import save_log
 from calc.calc_utils import deconstruct, fix_results
-from calc.basics import solve_basic
-from calc.deco import solve_deco
+from calc.simple import solve_basic
 from calc.equation import solve_equation
 from calc.complex import solve_complex
 
@@ -20,11 +19,11 @@ def solve(expression:str):
         path = []
         print(expression)
         exp_type, comps = deconstruct(expression)
-        if exp_type == 'basic':
+        if exp_type == 'Simple Math':
             result, path = solve_basic(comps)
-        elif exp_type == 'equation':
+        elif exp_type == 'One Var equation':
             result, path = solve_equation(comps)
-        elif exp_type in ['complex', 'combine']:
+        elif exp_type in ['Complex', 'Simplify Exp']:
             results = solve_complex(expression)
             result = fix_results(results) 
             print(result)
@@ -42,7 +41,7 @@ def solve(expression:str):
         return conclusion
     except Exception as e:
         print('ERROR: ', e,)
-        return {"result": 'Failed', "path": []}
+        return {"expression": expression,"result": 'Failed', "path": []}
 
 def test(exp):
     response = solve(exp)

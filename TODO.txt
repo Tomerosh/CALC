@@ -1,7 +1,6 @@
 // TODAY
 - Equations v
 - log v
-
 - users
 - front end
 

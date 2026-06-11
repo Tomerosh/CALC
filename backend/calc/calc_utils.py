@@ -102,13 +102,13 @@ def deconstruct(expression:str):
         comps.pop()
         equal_exists = False
     if len(vars) > 1 or (len(vars) and '^' in expression):
-        exp_type = 'complex'
+        exp_type = 'Complex'
     elif len(vars) and equal_exists:
-        exp_type = 'equation'
+        exp_type = 'One Var equation'
     elif len(vars):
-        exp_type = 'combine'
+        exp_type = 'Simplify Exp'
     else:
-        exp_type = 'basic'
+        exp_type = 'Simple Math'
     return exp_type, comps
     
 # Handle results list 
