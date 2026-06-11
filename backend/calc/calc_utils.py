@@ -49,9 +49,9 @@ def power_exp(comps:list):
     return new_comps
 
 def deconstruct(expression:str): 
+    vars = set()
     current_comp = ''
     comps = [] # comps => components
-    variable_exists = False
     equal_exists = False
     fixed_expression = expression.replace(' ', '')
     for char in fixed_expression:
@@ -61,21 +61,25 @@ def deconstruct(expression:str):
         elif char == '-' and len(current_comp) == 0:
             current_comp += char
         elif char.isalpha(): # 2x + 1
-            variable_exists = True
             is_var = True
             if len(current_comp):
                 val = current_comp
                 current_comp = ''
                 comps.append(Variable(char, val))
+                vars.add(char)
             else:
                 comps.append(Variable(char))
+                vars.add(char)
 
         elif char in OPERATORS + ['(', ')']:
             if len(current_comp):
                 if is_num(current_comp):
                     comps.append(Number(current_comp))
                 else: 
-                    comps.append(Variable(current_comp))
+                    var = Variable(current_comp)
+                    comps.append(var)
+                    vars.add(var.name)
+
             current_comp = ''
             comps.append(char)
             if char == '=':
@@ -88,20 +92,36 @@ def deconstruct(expression:str):
         if not is_var:
             comps.append(Number(current_comp))
         else: 
-            comps.append(Variable(current_comp))
+            var = Variable(current_comp)
+            comps.append(var)
+            vars.add(var.name)
+
     if comps[-1] in OPERATORS:
         comps.pop()
     if comps[-1] == '=' and '=' not in comps[:-1]:
         comps.pop()
         equal_exists = False
-
-
-    if variable_exists and equal_exists:
-        type = 'equation'
-    elif variable_exists:
-        type = 'deco'
+    if len(vars) > 1 or (len(vars) and '^' in expression):
+        exp_type = 'complex'
+    elif len(vars) and equal_exists:
+        exp_type = 'equation'
+    elif len(vars):
+        exp_type = 'combine'
     else:
-        type = 'basic'
-    return type, comps
+        exp_type = 'basic'
+    return exp_type, comps
     
-
+# Handle results list 
+def fix_results(results:list):
+    if not isinstance(results, list):
+        return str(results)
+    fixed_result = ''
+    result_count = len(results)
+    for i in range(result_count):
+        if isinstance(results[i], dict):
+            for key in results[i].keys():
+                fixed_result += f'{key} = {results[i][key]}'
+        else:
+            fixed_result += str(float(results[i]))
+        fixed_result += " | " if i < result_count - 1 else ''
+    return fixed_result

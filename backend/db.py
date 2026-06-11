@@ -1,9 +1,10 @@
-from sqlalchemy import Column, Date, Float, Integer, MetaData, String, Table, Time, create_engine, inspect
+from sqlalchemy import Column, Date, DateTime, Float, Integer, MetaData, String, Table, Time, create_engine, func, inspect
 from sqlalchemy.orm import DeclarativeBase, Mapped, declarative_base, mapped_column
 from sqlalchemy.orm import sessionmaker
+from datetime import datetime, timezone
 
 DB_USERNAME = 'postgres'
-DB_PASSWORD = '2409'
+DB_PASSWORD = '29022024'
 
 engine = create_engine(f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@localhost:5432/postgres", echo=True)
     
@@ -16,7 +17,11 @@ class Base(DeclarativeBase):
 class Log(Base):
     __tablename__ = 'log'
     exp_id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    time: Mapped[Time]
+    time: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), 
+        server_default=func.now(),
+        onupdate=func.now()
+    )
     user_id: Mapped[int]
     type: Mapped[str]
     expression: Mapped[str]
@@ -32,7 +37,7 @@ class Log(Base):
 Base.metadata.create_all(engine)
 
 def load_log(user_id):
-    pass
+    session.get()
 
 
 # save_data(table, data)
@@ -40,7 +45,23 @@ def load_log(user_id):
 #         data['username']
 # load_data()
 
-def save_log(conclusion:object):
+async def save_log(conclusion:object):
+
+    print('LOG TEST: ', conclusion)
+    log = Log(
+        time= datetime.now(timezone.utc),
+        user_id= conclusion['user_id'],
+        expression= conclusion['expression'],
+        type= conclusion['type'],
+        result= conclusion['result'],
+    )
+    print('LOG TEST: ', log)
+    # exp_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    # time: Mapped[datetime]
+    # user_id: Mapped[int]
+    # type: Mapped[str]
+    # expression: Mapped[str]
+    # result: Mapped[str]
     session.add(log)
     session.commit()
     

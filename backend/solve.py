@@ -3,38 +3,46 @@ import sympy
 from fastapi import APIRouter
 
 # from db import save_log
-from calc.calc_utils import deconstruct
+from db import save_log
+from calc.calc_utils import deconstruct, fix_results
 from calc.basics import solve_basic
 from calc.deco import solve_deco
 from calc.equation import solve_equation
+from calc.complex import solve_complex
 
 
 router = APIRouter()
+# Main expression solving logic
 @router.post('/solve')
 def solve(expression:str):
-    # try:
-    result = 0
-    path = []
-    print(expression)
-    type, comps = deconstruct(expression)
-    if type == 'basic':
-        result, path = solve_basic(comps)
-    elif type == 'deco':
-        result, path = solve_deco(comps)
-    else:
-        result, path = solve_equation(comps)
-    conclusion = {
-        "time": '',
-        "user_id": 1,
-        "expression": expression,
-        "type": type,
-        "result": result,
-        "path": path
-    }
-    # save_log(conclusion)
-    return conclusion
-    # except:
-    #     return {"result": 'Error', "path": {}}
+    try:
+        result = 0
+        path = []
+        print(expression)
+        exp_type, comps = deconstruct(expression)
+        if exp_type == 'basic':
+            result, path = solve_basic(comps)
+        elif exp_type == 'equation':
+            result, path = solve_equation(comps)
+        elif exp_type in ['complex', 'combine']:
+            results = solve_complex(expression)
+            result = fix_results(results) 
+            print(result)
+        else:
+            result, path = '0', []
+        # Define conclusion for response
+        conclusion = {
+            "user_id": 1,
+            "expression": expression,
+            "type": exp_type,
+            "result": result,
+            "path": path
+        }
+        save_log(conclusion)
+        return conclusion
+    except Exception as e:
+        print('ERROR: ', e,)
+        return {"result": 'Failed', "path": []}
 
 def test(exp):
     response = solve(exp)
@@ -44,17 +52,21 @@ def test(exp):
         print(step['expression'])
     print(response['result'])
 
+# Simple
+a1 = '5-5*5'
+# Equation
+b1 = '2x+4+4x=2+5x*10'
+b2 = "10+5x+10-2x=50+5x+2+4x"
+b3 = '2x+3*8+4x*5=5x/2+6x*2/3'
+# Complex
+c1 = '2x**2+5X'
+c2 = "5x+5*5y = 4y+2x*4"
+c3 = '2y+y/3+5=3y+4'
+c4 = '2x+3*8+4x*5=5x^2'
 
-a = '5-5*5'
-b = "5x+5*5y"
-c = "10+5x+10-2x=50+5x+2+4x"
-d = '2x**2+5X'
-e = '2x+4+4x=2+5x*10'
-f = '2y+y/3+5=3y+4'
-g = '2x+3*8+4x*5=5x/2+6x*2/3'
+# solve(b)
 # print(solve(a))
 # print(is_num('2.0x'))
-test(a)
 # 5, '*', 'x'
 
 # b = Variable('x', 1, -5)
@@ -77,3 +89,4 @@ test(a)
 # # b = Variable('x', 2)
 # # c = 'a'
 # num = Number(2)
+# test(c)
