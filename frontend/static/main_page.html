@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home page></title>
+        <link rel="stylesheet" href="main_page_style.css">
+    </head>
+
+    <body>
+        <div class="header-container">
+            <h1>Welcome {{username}}</h1>
+            
+            <a href="/{{username}}" class="profile-link" title="expressions history">
+                <img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" alt="Profile History">
+            </a>
+        </div>
+
+        <form action="/solve" method="post">
+            <input type="text" name=""exercise placeholder="Enter an exercise" required>
+            
+            <input type="text" name="solution" placeholder="Insert your solution (optional)">
+            
+            <button type="sumbit">calc</button>
+        </form>
+
+        <link img = "https://cdn-icons-png.flaticon.com/128/1144/1144760.png">
+        </body>
