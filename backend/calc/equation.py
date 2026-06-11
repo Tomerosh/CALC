@@ -216,7 +216,7 @@ def solve_equation(comps:list):
                         
         path.append({"expression": join_exp(left_side + ['='] + right_side),
                     "description": f"Isolate Variable {left_side[0].name}"})
-    return path, f'{left_side[0].name} = {right_side[0].value / left_side[0].value}'
+    return f'{left_side[0].name} = {right_side[0].value / left_side[0].value}', path
 
     # while '(' in left_side:
     #     sub_comps, start, stop = brackets(left_side)

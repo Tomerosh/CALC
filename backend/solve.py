@@ -18,18 +18,18 @@ def solve(expression:str):
     print(expression)
     type, comps = deconstruct(expression)
     if type == 'basic':
-        result = solve_basic(comps)
+        result, path = solve_basic(comps)
     elif type == 'deco':
-        result = solve_deco(comps)
+        result, path = solve_deco(comps)
     else:
-        path, result = solve_equation(comps)
+        result, path = solve_equation(comps)
     conclusion = {
-
-        "expression": expression,
-        "result": result,
-        "path": path,
+        "time": '',
         "user_id": 1,
-        "type": type
+        "expression": expression,
+        "type": type,
+        "result": result,
+        "path": path
     }
     # save_log(conclusion)
     return conclusion
@@ -54,7 +54,7 @@ f = '2y+y/3+5=3y+4'
 g = '2x+3*8+4x*5=5x/2+6x*2/3'
 # print(solve(a))
 # print(is_num('2.0x'))
-test(g)
+test(a)
 # 5, '*', 'x'
 
 # b = Variable('x', 1, -5)
