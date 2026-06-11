@@ -8,19 +8,20 @@
     <body>
         <div class="header-container">
             <h1 id="welcome">Welcome</h1>
-            <script src="static/main.js"></script>  
             
             <a href="/{{username}}" class="profile-link" title="expressions history">
                 <img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" alt="Profile History">
             </a>
         </div>
 
-        <form action="/solve" method="post">
+        <form id="exp-form" action="/solve/" method="post">
             <input type="text" name="expression" placeholder="Enter an expression" required>
+           
+            <div id="result_box"></div>
             <input type="text" name="solution" placeholder="Insert your solution (optional)">
             <button type="sumbit">calc</button>
         </form>
-
+        <script src="static/main.js"></script>  
         <link img = "https://cdn-icons-png.flaticon.com/128/1144/1144760.png">
       
     </body>

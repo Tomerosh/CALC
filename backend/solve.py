@@ -10,10 +10,11 @@ from calc.equation import solve_equation
 from calc.complex import solve_complex
 
 router = APIRouter()
+
 # Main expression solving logic
-@router.post('/solve')
+@router.post('/solve/')
 def solve(expression:str = Form(...)):
-    try:
+    # try:
         result = 0
         path = []
         print(expression)
@@ -25,7 +26,6 @@ def solve(expression:str = Form(...)):
         elif exp_type in ['Complex', 'Simplify Exp']:
             results = solve_complex(expression)
             result = fix_results(results) 
-            print(result)
         else:
             result, path = '0', []
         # Define conclusion for response
@@ -36,11 +36,11 @@ def solve(expression:str = Form(...)):
             "result": result,
             "path": path
         }
-        save_log(conclusion)
+        # save_log(conclusion)
         return conclusion
-    except Exception as e:
-        print('ERROR: ', e,)
-        return {"expression": expression,"result": 'Failed', "path": []}
+    # except Exception as e:
+    #     print('ERROR: ', e,)
+    #     return {"expression": expression,"result": 'Failed', "path": []}
 
 def test(exp):
     response = solve(exp)
