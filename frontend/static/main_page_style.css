@@ -1,0 +1,84 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: #f4f7f6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 100px;
+    margin: 0;
+    min-height: 100vh;
+    /* קריטי: מגדיר את ה-body כנקודת הייחוס עבור המיקום האבסולוטי של הלוגו */
+    position: relative; 
+}
+
+h1 {
+    color: #333;
+    margin: 0;
+}
+
+/* ה-container של הראש כעת רק דואג למרווח מלמטה */
+.header-container {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* מיקום לוגו הפרופיל בדיוק בצד ימין למעלה */
+.profile-link {
+    position: absolute;
+    top: 20px;    /* מרחק של 20 פיקסלים מהחלק העליון */
+    right: 20px;  /* מרחק של 20 פיקסלים מצד ימין */
+}
+
+/* עיצוב התמונה של האייקון */
+.profile-link img {
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* אפקט מעבר עכבר */
+.profile-link img:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+/* עיצוב הטופס של המחשבון (נשאר כפי שהיה) */
+form {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+}
+
+input {
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+input:focus {
+    border-color: #28a745;
+    outline: none;
+}
+
+button {
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #218838;
+}
