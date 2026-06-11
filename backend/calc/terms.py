@@ -1,10 +1,20 @@
 class Variable():
     def __init__(self, name, value=1, power=1):
-        self.name:str = name
-        self.value:float = float(value)
+        val = ''
+        fixed_name = ''
+        if len(name) > 1:
+            for char in name:
+                if char.isdigit() or '.' == char or '-' == char and len(val):
+                    val += char
+                else:
+                    fixed_name += char
+        else:
+            fixed_name = name
+            val = value
+        self.name:str = fixed_name
+        self.value:float = float(val)
         self.power:float = float(power)
 
-    # Print
     def __str__(self):
         val = ''
         if self.value != 1: 
@@ -67,7 +77,7 @@ class Variable():
     # Power
     def __pow__(self, other):
         if isinstance(other, Variable): # Power of another var
-            pass
+            return False
         else:
             if self.power == 1:
                 power = self.power + float(other)

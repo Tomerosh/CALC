@@ -7,7 +7,9 @@ DEPENDENCIES:
 fastapi
 uvicorn
 sqlalchemy 
-psycopg2
+"psycopg[binary]"
+
+pip install fastapi uvicorn sqlalchemy "psycopg[binary]"
 
 Endpoints:
 GET/ # Home page
