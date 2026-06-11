@@ -3,57 +3,58 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import create_engine, text
-from backend import solve
-import uvicorn
+from db import create_user, get_user
+import solve
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="../frontend/static"), name="static")
-
 app.include_router(solve.router)
-templates = Jinja2Templates(directory="../frontend/static")
-engine = create_engine("sqlite:///my_database.db")
 
+templates = Jinja2Templates(directory="../frontend/static")
 
 #הצגה של העמוד התחברות
+# Display login page
 @app.get("/", response_class=HTMLResponse)
 async def login_page(request: Request):
-    return templates.TemplateResponse("login_page.html", {"request": request})
+    return templates.TemplateResponse(name="login_page.html", request=request)
 
-
-router = APIRouter()
 #הצגת עמוד הרשמה
-@router.get("/sign_up", response_class=HTMLResponse)
+# Display Sign up page
+@app.get("/sign_up", response_class=HTMLResponse)
 async def sign_up_page(request: Request):
-    return templates.TemplateResponse("sign_up_page.html", {"request": request})
+    return templates.TemplateResponse(name="sign_up_page.html", request=request)
 
 #שליחת מידע והתחברות
 @app.post("/login", response_class=HTMLResponse)
-async def login(request: Request, Login_username: str = Form(...), Login_password: str = Form(...)):
-    query = f"SELECT user_id, username FROM users WHERE username = '{Login_username}' AND password = '{Login_password}' "
-    with engine.connect() as conn:
-        user_record = conn.execute(text(query)).fetchone()
-        if user_record:
+async def login(request: Request, username: str = Form(...), password: str = Form(...)):
+    
+    # query = f"SELECT user_id, username FROM users WHERE username = '{Login_username}' AND password = '{Login_password}' "
+    # with engine.connect() as conn:
+    #     user_record = conn.execute(text(query)).fetchone()
+    #     if user_record:
+    db_user = get_user(username)
+    if db_user:
+        if db_user.check_password(password):
             return templates.TemplateResponse(
-                "main_page.html",
-                {{"request": request, "username": db_username, "user_id": user_id}}
+                name="main_page.html",
+                request=request,
             )
-        else:
-            return "Username or Password is worng"
+
+    return "Username or Password is worng"
         
 #שליחת מידע והרשמה
 @app.post("/sign_up", response_class=HTMLResponse)
-async def sign_up(request: Request, sign_up_username: str, sign_up_password: str):
-    query = f'INSERT INTO users (username, password) VALUES ({sign_up_username}, {sign_up_password})'
-    with engine.connect() as conn:
-        conn.execute(text(query))
-        conn.commit()
-        return "Registration was successful, log in from the login form."
+async def sign_up(request: Request, username: str = Form(...), password: str = Form(...)):
+    # query = f'INSERT INTO users (username, password) VALUES ({username}, {password})'
+    # with engine.connect() as conn:
+    #     conn.execute(text(query))
+    #     conn.commit()
+    if get_user(username):
+        return "Username already in use"
     
-
-# #שליחת תרגיל 
-# @app.post("/solve", response_class=HTMLResponse)
-# async def solve_expression()
+    create_user(username, password)
+    return "Registration was successful, log in from the login form."
     
 
 #צפייה בפרופיל האישי
@@ -70,4 +71,7 @@ async def show_profile(request: Request, username: str):
         {"request": request, "username": username, "logs": user_logs}
     )
 
-uvicorn.run(app)
+# uvicorn.run(app)
+
+
+# engine = create_engine("sqlite:///my_database.db")

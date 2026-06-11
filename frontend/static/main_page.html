@@ -2,7 +2,8 @@
 <html>
     <head>
         <title>Home page></title>
-        <link rel="stylesheet" href="main_page_style.css">
+        <link rel="stylesheet" href="static/main_page_style.css">
+        <script src="main.js"></script>
     </head>
 
     <body>
@@ -15,10 +16,8 @@
         </div>
 
         <form action="/solve" method="post">
-            <input type="text" name=""exercise placeholder="Enter an exercise" required>
-            
+            <input type="text" name="expression" placeholder="Enter an expression" required>
             <input type="text" name="solution" placeholder="Insert your solution (optional)">
-            
             <button type="sumbit">calc</button>
         </form>
 

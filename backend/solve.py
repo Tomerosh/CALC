@@ -1,6 +1,6 @@
 import sympy
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Form
 
 # from db import save_log
 from db import save_log
@@ -12,7 +12,7 @@ from calc.complex import solve_complex
 router = APIRouter()
 # Main expression solving logic
 @router.post('/solve')
-def solve(expression:str):
+def solve(expression:str = Form(...)):
     try:
         result = 0
         path = []
