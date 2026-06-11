@@ -1,4 +1,4 @@
 import sympy
 
-x = sympy.symbols('x')
-print( 10 * x /2 )
+x, y = sympy.symbols('x y')
+print( 2*x**2 ** 3*y**4  )
