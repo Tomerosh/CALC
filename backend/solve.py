@@ -9,7 +9,6 @@ from calc.simple import solve_basic
 from calc.equation import solve_equation
 from calc.complex import solve_complex
 
-
 router = APIRouter()
 # Main expression solving logic
 @router.post('/solve')
