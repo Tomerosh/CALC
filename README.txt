@@ -8,8 +8,12 @@ fastapi
 uvicorn
 sqlalchemy 
 "psycopg[binary]"
+jinja2
+python-multipart
+sympy
+bcrypt
 
-pip install fastapi uvicorn sqlalchemy "psycopg[binary]"
+pip install fastapi uvicorn sqlalchemy "psycopg[binary]" jinja2 python-multipart sympy bcrypt
 
 Endpoints:
 GET/ # Home page
