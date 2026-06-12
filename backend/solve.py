@@ -1,19 +1,20 @@
 import sympy
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Form
 
 # from db import save_log
 from db import save_log
-from calc.calc_utils import deconstruct, fix_results
+from calc.calc_utils import deconstruct, fix_result
 from calc.simple import solve_basic
 from calc.equation import solve_equation
 from calc.complex import solve_complex
 
 router = APIRouter()
+
 # Main expression solving logic
-@router.post('/solve')
-def solve(expression:str):
-    try:
+@router.post('/solve/')
+def solve(expression:str = Form(...)):
+    # try:
         result = 0
         path = []
         print(expression)
@@ -23,11 +24,11 @@ def solve(expression:str):
         elif exp_type == 'One Var equation':
             result, path = solve_equation(comps)
         elif exp_type in ['Complex', 'Simplify Exp']:
-            results = solve_complex(expression)
-            result = fix_results(results) 
-            print(result)
+            result = solve_complex(expression)
         else:
             result, path = '0', []
+
+        result = fix_result(result)
         # Define conclusion for response
         conclusion = {
             "user_id": 1,
@@ -36,11 +37,11 @@ def solve(expression:str):
             "result": result,
             "path": path
         }
-        save_log(conclusion)
+        # save_log(conclusion)
         return conclusion
-    except Exception as e:
-        print('ERROR: ', e,)
-        return {"expression": expression,"result": 'Failed', "path": []}
+    # except Exception as e:
+    #     print('ERROR: ', e,)
+    #     return {"expression": expression,"result": 'Failed', "path": []}
 
 def test(exp):
     response = solve(exp)
