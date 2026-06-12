@@ -24,6 +24,7 @@ def solve_complex(exp):
         eq = sympify(fixed_exp)
         return eq
     
+
 # Simple
 a1 = '5-5*5'
 # Equation
@@ -41,3 +42,8 @@ c7 = '(4x^3-2x^2+5x)/x-3x*4=12x^2-4x+5'
 
 # Failed
 f1 = '(2x^2-4x+3)/(x-2)+5x*3=(4x^2+1)/(x+2)'
+f2 = '10%90'
+
+
+
+print(solve_complex(f2))

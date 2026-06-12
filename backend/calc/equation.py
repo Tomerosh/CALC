@@ -170,10 +170,7 @@ def solve_equation(comps:list):
                         else:
                             right_side.append(side[i]*(-1))
                             side.pop(i)
-                            if side_name == 'left':
-                                expression = join_exp(side + ['='] + right_side)
-                            else:
-                                expression = join_exp(left_side + ['='] + side)
+                        expression = join_exp(side + ['='] + right_side)
                         path.append({"expression":  expression,
                                     "description": description})
                 elif side_name == 'right':

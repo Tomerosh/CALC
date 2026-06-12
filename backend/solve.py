@@ -4,7 +4,7 @@ from fastapi import APIRouter, Form
 
 # from db import save_log
 from db import save_log
-from calc.calc_utils import deconstruct, fix_results
+from calc.calc_utils import deconstruct, fix_result
 from calc.simple import solve_basic
 from calc.equation import solve_equation
 from calc.complex import solve_complex
@@ -24,10 +24,11 @@ def solve(expression:str = Form(...)):
         elif exp_type == 'One Var equation':
             result, path = solve_equation(comps)
         elif exp_type in ['Complex', 'Simplify Exp']:
-            results = solve_complex(expression)
-            result = fix_results(results) 
+            result = solve_complex(expression)
         else:
             result, path = '0', []
+
+        result = fix_result(result)
         # Define conclusion for response
         conclusion = {
             "user_id": 1,

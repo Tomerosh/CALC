@@ -84,9 +84,9 @@ button:hover {
 }
 
 #result_box {
+    flex: 1;
     font-size: 16px;
     text-align: center;
-    height: 25px;
     padding-bottom: 10px;
     font-weight: 700;
 

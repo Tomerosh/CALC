@@ -13,6 +13,7 @@ async function post_expression() {
         body: data
     })
     const res = await response.json()
+    console.log(res)
     const result_box = document.getElementById("result_box");
     result_box.innerText = res.result
     

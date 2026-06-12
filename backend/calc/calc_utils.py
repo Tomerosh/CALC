@@ -2,7 +2,9 @@ from calc.terms import Variable, Number
 
 # CONSTANTS
 DIGITS = '0123456789.'
-OPERATORS = ['+', '-', '*', '/', '^', '=', '(']
+OPERATORS = ['+', '-', '*', '/', '^', '=']
+OPS = ['^', '*/\\', '+-']
+INVALID_CHARS = '@#$%&\'\"'
 
 # Join components to string
 def join_exp(comps):
@@ -48,45 +50,56 @@ def power_exp(comps:list):
             new_comps = comps[:i-1] + [result] + comps[i+min(2, len(comps)-1):]
     return new_comps
 
+
 def deconstruct(expression:str): 
+    # Assign vars set to count distinct vars
     vars = set()
     current_comp = ''
+    # Component list
     comps = [] # comps => components
+
     equal_exists = False
-    fixed_expression = expression.replace(' ', '')
-    for char in fixed_expression:
-        is_var = False
-        if char in '0123456789.':
-            current_comp += char
-        elif char == '-' and len(current_comp) == 0:
-            current_comp += char
-        elif char.isalpha(): # 2x + 1
-            is_var = True
-            if len(current_comp):
-                val = current_comp
+    try:
+        fixed_expression = expression.replace(' ', '')
+        for char in fixed_expression:
+            is_var = False
+            # Find digits and dots
+            if char in '0123456789.':
+                current_comp += char
+            # Find negetive sign and attach to number
+            elif char == '-' and len(current_comp) == 0:
+                current_comp += char
+            # Identify letters
+            elif char.isalpha(): 
+                is_var = True
+                if len(current_comp):
+                    val = current_comp
+                    current_comp = ''
+                    comps.append(Variable(char, val))
+                    vars.add(char)
+                else:
+                    comps.append(Variable(char))
+                    vars.add(char)
+
+            elif char in OPERATORS + ['(', ')']:
+                if len(current_comp):
+                    if is_num(current_comp):
+                        comps.append(Number(current_comp))
+                    else: 
+                        var = Variable(current_comp)
+                        comps.append(var)
+                        vars.add(var.name)
+
                 current_comp = ''
-                comps.append(Variable(char, val))
-                vars.add(char)
+                comps.append(char)
+                if char == '=':
+                    equal_exists = True
+                
             else:
-                comps.append(Variable(char))
-                vars.add(char)
-
-        elif char in OPERATORS + ['(', ')']:
-            if len(current_comp):
-                if is_num(current_comp):
-                    comps.append(Number(current_comp))
-                else: 
-                    var = Variable(current_comp)
-                    comps.append(var)
-                    vars.add(var.name)
-
-            current_comp = ''
-            comps.append(char)
-            if char == '=':
-                equal_exists = True
-            
-        else:
-            raise ValueError()
+                raise ValueError()
+    except ValueError:
+        return 'ValueError', []
+    
         
     if len(current_comp):
         if not is_var:
@@ -110,18 +123,29 @@ def deconstruct(expression:str):
     else:
         exp_type = 'Simple Math'
     return exp_type, comps
-    
+
+def int_result(result):
+    result = float(result)
+    if result.is_integer():
+        return str(int(result))
+    else: 
+        return str(result)
+
 # Handle results list 
-def fix_results(results:list):
-    if not isinstance(results, list):
-        return str(results)
+def fix_result(result:list):
     fixed_result = ''
-    result_count = len(results)
-    for i in range(result_count):
-        if isinstance(results[i], dict):
-            for key in results[i].keys():
-                fixed_result += f'{key} = {results[i][key]}'
-        else:
-            fixed_result += str(float(results[i]))
-        fixed_result += " | " if i < result_count - 1 else ''
+
+    if isinstance(result, list):
+       
+        result_count = len(result)
+        for i in range(result_count):
+            if isinstance(result[i], dict):
+                for key in result[i].keys():
+                    fixed_result += f'{key} = {int_result(result[i][key])}'
+            else:
+                fixed_result += str(float(result[i]))
+            fixed_result += " | " if i < result_count - 1 else ''
+    else:
+        fixed_result = int_result(result)
+
     return fixed_result
