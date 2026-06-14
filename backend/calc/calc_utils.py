@@ -21,10 +21,24 @@ def substract(num1, num2):
     return num1 - num2
 
 OPS = [
-    {'^': {'name': 'power', 'action': power}, '**': {'name': 'power', 'action': power}},
-    {'*': {'name': 'multipy', 'action': multipy}, '/': {'name': 'divide', 'action': divide}, '\\': {'name': 'divide', 'action': divide}},
-    {'+': {'name': 'add', 'action': add}, '-': {'name': 'substract', 'action': substract}}
+    {'^': {'name': 'Power', 'action': power}, '**': {'name': 'Power', 'action': power}},
+    {'*': {'name': 'Multipy', 'action': multipy}, '/': {'name': 'Divide', 'action': divide}, '\\': {'name': 'Divide', 'action': divide}},
+    {'+': {'name': 'Add', 'action': add}, '-': {'name': 'Substract', 'action': substract}}
     ]
+
+def calculate(comps):
+    new_comps = comps.copy()
+    path = []
+    for op_group in OPS:
+        for op in op_group.keys():
+            if op in new_comps:
+                op_index = new_comps.index(op)
+                result = op_group[op]['action'](new_comps[op_index-1], new_comps[op_index+1])
+                if result: 
+                    description = f'{op_group[op]['name']} {new_comps[op_index-1]} {op} {new_comps[op_index+1]}'
+                    new_comps[op_index-1:op_index+2] = [result]
+                    path.append({"expression": new_comps.copy(),"description": description})
+    return new_comps, path
 
 # Join components to string
 def join_exp(comps):

@@ -1,7 +1,4 @@
-import sympy
-
 from fastapi import APIRouter, Form
-
 # from db import save_log
 from db import save_log
 from calc.calc_utils import deconstruct, fix_result

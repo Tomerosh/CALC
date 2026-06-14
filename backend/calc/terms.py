@@ -17,7 +17,9 @@ class Variable():
 
     def __str__(self):
         val = ''
-        if self.value != 1: 
+        if self.value == 0:
+            return '0'
+        elif self.value != 1: 
             if self.value.is_integer():
                 val = str(int(self.value))
             else: 
@@ -31,6 +33,8 @@ class Variable():
     def __eq__(self, other):
         if isinstance(other, Variable):
             return self.name == other.name and self.power == other.power
+        elif self.value == 0:
+            return 0 == other
         return False
     
     # Addition
@@ -136,7 +140,7 @@ class Number():
 
     def __pow__(self, other):
         if isinstance(other, Number):
-            return Number(self.value ** self.value)
+            return Number(self.value ** other.value)
         elif isinstance(other, Variable):
             return False
         elif isinstance(other, (int, float)):
