@@ -27,12 +27,6 @@ templates = Jinja2Templates(directory="../frontend/static")
 async def login_page(request: Request):
     return templates.TemplateResponse(name="login_page.html", request=request)
 
-#הצגת עמוד הרשמה
-# Display Sign up page
-@app.get("/sign_up", response_class=HTMLResponse)
-async def sign_up_page(request: Request):
-    return templates.TemplateResponse(name="sign_up_page.html", request=request)
-
 #שליחת מידע והתחברות
 @app.post("/login", response_class=HTMLResponse)
 async def login(request: Request, username: str = Form(...), password: str = Form(...)):
@@ -49,6 +43,12 @@ async def login(request: Request, username: str = Form(...), password: str = For
 
     return "Username or Password is worng"
         
+#הצגת עמוד הרשמה
+# Display Sign up page
+@app.get("/sign_up", response_class=HTMLResponse)
+async def sign_up_page(request: Request):
+    return templates.TemplateResponse(name="sign_up_page.html", request=request)
+
 #שליחת מידע והרשמה
 @app.post("/sign_up", response_class=HTMLResponse)
 async def sign_up(request: Request, username: str = Form(...), password: str = Form(...)):
@@ -64,8 +64,8 @@ async def sign_up(request: Request, username: str = Form(...), password: str = F
     
 
 #צפייה בפרופיל האישי
-app.get("/{username}", response_class=HTMLResponse)
-async def show_profile(request: Request, username: str):
+@app.get("/{username}", response_class=HTMLResponse)
+async def show_profile(username: str):
     # user_query = f"SELECT user_id FROM users WHERE username = {username}"
     # with engine.connect() as conn:
     #     user_record = conn.execute(text(user_query)).fetchone()
@@ -76,7 +76,6 @@ async def show_profile(request: Request, username: str):
     #         "profile.html", 
     #     {"request": request, "username": username, "logs": user_logs}
     # )
-
     print('USERNAME:', username)
 # Return solve page
 @app.post('/solve')

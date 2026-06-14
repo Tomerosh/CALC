@@ -3,8 +3,28 @@ from calc.terms import Variable, Number
 # CONSTANTS
 DIGITS = '0123456789.'
 OPERATORS = ['+', '-', '*', '/', '^', '=']
-OPS = ['^', '*/\\', '+-']
 INVALID_CHARS = '@#$%&\'\"'
+
+def power(num, pow):
+    return num ** pow
+
+def multipy(num1, num2):
+    return num1 * num2
+
+def divide(num1, num2):
+    return num1 / num2
+
+def add(num1, num2):
+    return num1 + num2
+
+def substract(num1, num2):
+    return num1 - num2
+
+OPS = [
+    {'^': {'name': 'power', 'action': power}, '**': {'name': 'power', 'action': power}},
+    {'*': {'name': 'multipy', 'action': multipy}, '/': {'name': 'divide', 'action': divide}, '\\': {'name': 'divide', 'action': divide}},
+    {'+': {'name': 'add', 'action': add}, '-': {'name': 'substract', 'action': substract}}
+    ]
 
 # Join components to string
 def join_exp(comps):

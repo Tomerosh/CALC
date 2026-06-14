@@ -1,5 +1,22 @@
-from calc.calc_utils import brackets, DIGITS, join_exp, power_exp
+from calc.calc_utils import OPS, brackets, DIGITS, join_exp, power_exp
 from calc.terms import Number, Variable
+
+def calc_side_new(comps):
+    new_comps = comps.copy()
+    path = []
+    for op_group in OPS:
+        for op in op_group.keys():
+            if op in new_comps:
+                op_index = new_comps.index(op)
+                print(op, op_group)
+                result = op_group[op]['action'](new_comps[op_index-1], new_comps[op_index+1])
+                if result: 
+                    description = f'{op_group[op]['name']} {new_comps[op_index-1]} & {new_comps[op_index+1]}'
+                    new_comps[op_index-1:op_index+2] = [result]
+                    path.append({"expression": new_comps.copy(), "description": description})
+    return new_comps, path
+
+print(calc_side_new([1, '*', 2, '+', 4, '^', 2]))
 
 # Solve equation logic
 def solve_equation(comps:list):
@@ -11,6 +28,8 @@ def solve_equation(comps:list):
     right_side = comps[equal_index+1:]
     equation = [left_side, right_side]
 
+
+    
     def calc_side(side, side_name):
         # Power in comp list
         if '^' in side: 
