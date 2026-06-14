@@ -31,13 +31,17 @@ def calculate(comps):
     path = []
     for op_group in OPS:
         for op in op_group.keys():
+            print(op)
             if op in new_comps:
-                op_index = new_comps.index(op)
-                result = op_group[op]['action'](new_comps[op_index-1], new_comps[op_index+1])
-                if result: 
-                    description = f'{op_group[op]['name']} {new_comps[op_index-1]} {op} {new_comps[op_index+1]}'
-                    new_comps[op_index-1:op_index+2] = [result]
-                    path.append({"expression": new_comps.copy(),"description": description})
+                op_count = new_comps.count(op)
+                for i in range(op_count):
+                    op_index = new_comps.index(op)
+                    result = op_group[op]['action'](new_comps[op_index-1], new_comps[op_index+1])
+                    if result: 
+                        description = f'{op_group[op]['name']} {new_comps[op_index-1]} {op} {new_comps[op_index+1]}'
+                        new_comps[op_index-1:op_index+2] = [result]
+                        path.append({"expression": new_comps.copy(),"description": description})
+    
     return new_comps, path
 
 # Join components to string
