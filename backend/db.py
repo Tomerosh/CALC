@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from sqlalchemy.ext.hybrid import hybrid_property
 
 DB_USERNAME = 'postgres'
-DB_PASSWORD = '29022024'
+DB_PASSWORD = '2409'
 
 engine = create_engine(f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@localhost:5432/postgres", echo=True)
 Session = sessionmaker(bind=engine)
@@ -20,7 +20,7 @@ class Log(Base):
     __tablename__ = 'log'
     exp_id: Mapped[int] = mapped_column(Integer, primary_key=True)
     time: Mapped[datetime] = mapped_column(
-        DateTime(timezone=False), 
+        DateTime(timezone=True), 
         server_default=func.now(),
         onupdate=func.now()
     )
@@ -71,7 +71,7 @@ def load_log(user_id):
 async def save_log(conclusion:object):
 
     log = Log(
-        time= datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
+        # time= datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
         user_id= conclusion['user_id'],
         expression= conclusion['expression'], 
         type= conclusion['type'],
