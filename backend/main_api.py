@@ -1,5 +1,5 @@
 from fastapi import APIRouter, FastAPI, Form, Request, status
-from fastapi.responses import HTMLResponse, Response, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, Response, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -93,6 +93,10 @@ async def get_solve(request:Request):
 @app.get("/solve", response_class=HTMLResponse)
 async def solve_redirect(request:Request):
     return RedirectResponse('/')
+
+@app.get('/favicon.ico')
+def favicon():
+    return FileResponse('../frontend/static/favicon.ico')
 
 #צפייה בפרופיל האישי
 app.get("/{username}", response_class=HTMLResponse)
