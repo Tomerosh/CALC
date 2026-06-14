@@ -8,7 +8,7 @@ def solve_complex(exp):
     fixed_exp = ''
     for char in exp:
         if char == '^':
-            fixed_exp += '**'
+            fixed_exp += '**' 
         elif char.isalpha():
             if fixed_exp[-1] not in OPERATORS:
                 fixed_exp += '*'

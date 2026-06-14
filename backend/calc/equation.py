@@ -57,7 +57,8 @@ def solve_equation(comps:list):
                                     "description": description})
                 i+=1
                     
-        else: 
+        else:         
+            print(side)
             running = True
             i = 0
             while running:
@@ -112,9 +113,6 @@ def solve_equation(comps:list):
                                 path.append({"expression": expression,
                                             "description": description})
                                 break
-                    if len(side) == 1:
-                        return side
-
 
                 elif isinstance(side[i], Number):
                     sub = side[i+1:]
@@ -170,7 +168,6 @@ def solve_equation(comps:list):
                         path.append({"expression":  expression,
                                     "description": description})
                 elif side_name == 'right':
-                    print(123123)
                     if isinstance(side[i], Variable):
                         left_side.append('+')
                         description = f"Moved Variable {side[i]} to left side"
@@ -186,6 +183,9 @@ def solve_equation(comps:list):
                         else:
                             left_side.append(side[i]*(-1))
                             side.pop(i)
+                        
+                        if not len(side):
+                            side.append(Number(0))
                         
                         path.append({"expression": join_exp(left_side + ['='] + side),
                                     "description": description})
@@ -211,15 +211,19 @@ def solve_equation(comps:list):
         if len(right_side) > 1 or isinstance(right_side[0], Variable):
             right_side = calc_side(right_side, 'right')
         
-    
-    right_side.append('/')
-    right_side.append(Number(left_side[0].value))
-    left_side[0].value = 1
-    path.append({"expression": join_exp(left_side + ['='] + right_side),
-                "description": f"Isolate Variable {left_side[0].name}"})
-    result = f'{left_side[0].name} = {right_side[0] / right_side[2]}'
-    path.append({"expression": join_exp(result),
-                "description": f"Divide Numbers {right_side[0]} / {right_side[2]}"})
+    print('TEST', right_side, left_side)
+    if left_side[0].value == 0:
+        left_side[0] = Number(0)
+        result = f'{left_side[0]} = {right_side[0]}'
+    else:
+        right_side.append('/')
+        right_side.append(Number(left_side[0].value))
+        left_side[0].value = 1
+        path.append({"expression": join_exp(left_side + ['='] + right_side),
+                    "description": f"Isolate Variable {left_side[0].name}"})
+        result = f'{left_side[0].name} = {right_side[0] / right_side[2]}'
+        path.append({"expression": join_exp(result),
+                    "description": f"Divide Numbers {right_side[0]} / {right_side[2]}"})
     return result, path
 
     # while '(' in left_side:

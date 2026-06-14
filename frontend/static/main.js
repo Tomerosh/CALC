@@ -1,11 +1,14 @@
-
+const username = JSON.parse(document.getElementById('jinja-data').textContent);
 const form = document.getElementById("exp-form");
-console.log('help')
 form.addEventListener('submit', function (event) {
     event.preventDefault(); // Stops page refresh
     post_expression()
 });
-
+function show_profile() {
+    window.location.href = `/${username}`
+}
+const profile_link = document.getElementsByClassName('profile-link');
+profile_link.onclick = show_profile
 async function post_expression() {
     const data = new URLSearchParams(new FormData(form));
     const response = await fetch('/solve/', {
