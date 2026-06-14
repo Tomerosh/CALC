@@ -13,22 +13,23 @@ router = APIRouter()
 
 # Main expression solving logic
 @router.post('/solve/')
-def solve(expression:str = Form(...)):
+async def solve(expression:str = Form(...)):
     # try:
         result = 0
         path = []
-        print(expression)
         exp_type, comps = deconstruct(expression)
-        if exp_type == 'Simple Math':
+        if exp_type == "No Operators":
+            result = expression
+        elif exp_type == 'Simple Math':
             result, path = solve_basic(comps)
         elif exp_type == 'One Var equation':
             result, path = solve_equation(comps)
         elif exp_type in ['Complex', 'Simplify Exp']:
             result = solve_complex(expression)
+            result = fix_result(result)
         else:
-            result, path = '0', []
+            result, path = 'Cannot Solve', []
 
-        result = fix_result(result)
         # Define conclusion for response
         conclusion = {
             "user_id": 1,
@@ -37,7 +38,7 @@ def solve(expression:str = Form(...)):
             "result": result,
             "path": path
         }
-        # save_log(conclusion)
+        await save_log(conclusion)
         return conclusion
     # except Exception as e:
     #     print('ERROR: ', e,)

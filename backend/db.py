@@ -6,11 +6,12 @@ from datetime import datetime, timezone
 from sqlalchemy.ext.hybrid import hybrid_property
 
 DB_USERNAME = 'postgres'
-DB_PASSWORD = '29022024'
+DB_PASSWORD = '2409'
 
 engine = create_engine(f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@localhost:5432/postgres", echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
+
 
 class Base(DeclarativeBase):
     pass
@@ -56,7 +57,7 @@ class User(Base):
         hash_bytes = self._password_hash.encode('utf-8')
         return bcrypt.checkpw(password_bytes, hash_bytes)
     
-Base.metadata.create_all(engine)
+Base.metadata.create_all(engine, checkfirst=True)
 
 def load_log(user_id):
     session.get()
@@ -69,11 +70,10 @@ def load_log(user_id):
 
 async def save_log(conclusion:object):
 
-    print('LOG TEST: ', conclusion)
     log = Log(
-        time= datetime.now(timezone.utc),
+        # time= datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
         user_id= conclusion['user_id'],
-        expression= conclusion['expression'],
+        expression= conclusion['expression'], 
         type= conclusion['type'],
         result= conclusion['result'],
     )
@@ -103,5 +103,5 @@ def create_user(username, password):
 
 def get_user(username):
     statement = select(User).where(User.username == username)
-    result = session.scalars(statement).first()
+    result = session.scalars(statement).first() 
     return result

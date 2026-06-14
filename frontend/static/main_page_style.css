@@ -84,10 +84,32 @@ button:hover {
 }
 
 #result_box {
-    flex: 1;
-    font-size: 16px;
+    display: flex;
+    flex:1;
+    flex-direction: column;
     text-align: center;
-    padding-bottom: 10px;
     font-weight: 700;
+    gap: 10px;
 
 }
+
+.result_text {
+    color: #218838;
+}
+
+h4 {
+    margin: 0;
+}
+h5 {
+    margin: 0;
+}
+
+.result_step {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-block: 15px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
