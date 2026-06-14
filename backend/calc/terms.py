@@ -26,14 +26,7 @@ class Variable():
         return val + self.name + pow
     
     def __repr__(self):
-        val = ''
-        if self.value != 1: 
-            if self.value.is_integer():
-                val = str(int(self.value))
-            else: 
-                val = str(self.value)
-        pow = '^' + str(self.power) if self.power != 1 else ''
-        return val + self.name + pow
+        return str(self)
     
     def __eq__(self, other):
         if isinstance(other, Variable):
@@ -85,6 +78,11 @@ class Variable():
                 power = self.power ** float(other)
 
             return Variable(self.name, self.value, power)
+    def __setattr__(self, name, value):
+        if name == 'value':
+            if value.is_integer():
+                value = int(value)
+        super.__setattr__(self, name, value)
     
 
 class Number():
@@ -97,12 +95,10 @@ class Number():
         else:
             power = '^' + self.power if self.power != 1 else ''
             return f'{self.value}{power}'
+        
     def __repr__(self):
-        if self.value == 0:
-            return '0'
-        else:
-            power = '^' + self.power if self.power != 1 else ''
-            return f'{self.value}{power}'
+        return str(self)
+    
     def __add__(self, other):
         if isinstance(other, Number):
             if self.power == other.power:
@@ -121,6 +117,7 @@ class Number():
             return False
         elif isinstance(other, (int, float)):
             return Number(self.value - other)
+        
     def __mul__(self, other):
         if isinstance(other, Number):
             return Number(self.value * other.value)
@@ -128,6 +125,7 @@ class Number():
             return other * self
         elif isinstance(other, (int, float)):
             return Number(self.value * other)
+        
     def __truediv__(self, other):
         if isinstance(other, Number):
             return Number(self.value / other.value)
@@ -145,4 +143,15 @@ class Number():
             return Number(self.value ** other)
     def __float__(self):
         return float(self.value)
+    
+    def __int__(self):
+        if self.value.is_integer():
+            return int(self.value)
+        else:
+            return self.value
+    def __setattr__(self, name, value):
+        if name == 'value':
+            if value.is_integer():
+                value = int(value)
+        super.__setattr__(self, name, value)
 

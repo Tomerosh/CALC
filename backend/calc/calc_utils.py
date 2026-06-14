@@ -10,7 +10,10 @@ INVALID_CHARS = '@#$%&\'\"'
 def join_exp(comps):
     exp = ''
     for com in comps:
-        exp += str(com) 
+        if isinstance(com, Number):
+            exp += int_result(com) 
+        else:
+            exp += str(com)
     return exp
 
 #DELETE#
@@ -59,6 +62,7 @@ def deconstruct(expression:str):
     comps = [] # comps => components
 
     equal_exists = False
+    has_operator = False
     try:
         fixed_expression = expression.replace(' ', '')
         for char in fixed_expression:
@@ -92,6 +96,9 @@ def deconstruct(expression:str):
 
                 current_comp = ''
                 comps.append(char)
+                
+                if char in OPERATORS:
+                    has_operator = True
                 if char == '=':
                     equal_exists = True
                 
@@ -99,7 +106,6 @@ def deconstruct(expression:str):
                 raise ValueError()
     except ValueError:
         return 'ValueError', []
-    
         
     if len(current_comp):
         if not is_var:
@@ -114,7 +120,10 @@ def deconstruct(expression:str):
     if comps[-1] == '=' and '=' not in comps[:-1]:
         comps.pop()
         equal_exists = False
-    if len(vars) > 1 or (len(vars) and '^' in expression):
+
+    if not has_operator:
+        exp_type = 'No Operators'
+    elif len(vars) > 1 or (len(vars) and '^' in expression):
         exp_type = 'Complex'
     elif len(vars) and equal_exists:
         exp_type = 'One Var equation'
@@ -124,12 +133,17 @@ def deconstruct(expression:str):
         exp_type = 'Simple Math'
     return exp_type, comps
 
+# Convert result 
 def int_result(result):
-    result = float(result)
-    if result.is_integer():
-        return str(int(result))
-    else: 
-        return str(result)
+    try:
+        result = float(result)
+        if result.is_integer():
+            return str(int(result))
+        else: 
+            return str(result)
+    except TypeError:
+        # Result contains vars
+        return result
 
 # Handle results list 
 def fix_result(result:list):

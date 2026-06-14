@@ -62,8 +62,6 @@ def solve_equation(comps:list):
             i = 0
             while running:
                 # Finish loop when only 1 component left
-                if len(side) == 1:
-                    return side
                 # Check if comp is a var
                 if isinstance(side[i], Variable):
                     # Create search list
@@ -114,6 +112,8 @@ def solve_equation(comps:list):
                                 path.append({"expression": expression,
                                             "description": description})
                                 break
+                    if len(side) == 1:
+                        return side
 
 
                 elif isinstance(side[i], Number):
@@ -146,10 +146,10 @@ def solve_equation(comps:list):
                                     expression =  join_exp(left_side + ['='] + side)
                                     path.append({"expression": expression,
                                                 "description": description})
-
+                        
                         j+= 1
-                if len(side) == 1:
-                    return side
+                if not len(side):
+                    side.append(Number(0))
                 if side_name == 'left':
                     if isinstance(side[i], Number):
                         right_side.append('+')
@@ -163,10 +163,6 @@ def solve_equation(comps:list):
                                 right_side.append(side[i]*(-1)*(-1))
                                 side.pop(i-1)
                                 side.pop(i-1)
-                        elif i == len(side) -1 :
-                            right_side.append(side[i]*(-1))
-                            side.pop(i-1)
-                            side.pop(i-1)
                         else:
                             right_side.append(side[i]*(-1))
                             side.pop(i)
@@ -174,6 +170,7 @@ def solve_equation(comps:list):
                         path.append({"expression":  expression,
                                     "description": description})
                 elif side_name == 'right':
+                    print(123123)
                     if isinstance(side[i], Variable):
                         left_side.append('+')
                         description = f"Moved Variable {side[i]} to left side"
@@ -186,17 +183,14 @@ def solve_equation(comps:list):
                                 left_side.append(side[i]*(-1)*(-1))
                                 side.pop(i-1)
                                 side.pop(i-1)
-                        elif i == len(side) -1 :
-                            left_side.append(side[i]*(-1))
-                            side.pop(i-1)
-                            side.pop(i-1)
                         else:
                             left_side.append(side[i]*(-1))
-                            side.pop(i)
                             side.pop(i)
                         
                         path.append({"expression": join_exp(left_side + ['='] + side),
                                     "description": description})
+                if not len(side):
+                    side.append(Number(0))
                 if len(side) == 1:
                     return side
                 if side[0] == '+':
@@ -210,10 +204,11 @@ def solve_equation(comps:list):
         return side
 
                    
-    while len(left_side) > 1 or len(right_side) > 1:
-        if len(left_side) > 1:
+    while len(left_side) > 1 or len(right_side) > 1 or isinstance(left_side[0], Number) or isinstance(right_side[0], Variable):
+        print(left_side, right_side)
+        if len(left_side) > 1 or isinstance(left_side[0], Number):
             left_side = calc_side(left_side, 'left')
-        if len(right_side) > 1:
+        if len(right_side) > 1 or isinstance(right_side[0], Variable):
             right_side = calc_side(right_side, 'right')
         
     
