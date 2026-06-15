@@ -4,8 +4,9 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, text
-from db import create_user, get_user
+from db import create_user, get_user, load_log
 import solve
+# from profile_api import router as profile_router
 
 app = FastAPI()
 
@@ -18,6 +19,7 @@ app.add_middleware(
 )
 app.mount("/static", StaticFiles(directory="../frontend/static"), name="static")
 app.include_router(solve.router)
+# app.include_router(profile_router)
 
 templates = Jinja2Templates(directory="../frontend/static")
 
@@ -62,21 +64,6 @@ async def sign_up(request: Request, username: str = Form(...), password: str = F
     create_user(username, password)
     return "Registration was successful, log in from the login form."
     
-
-#צפייה בפרופיל האישי
-@app.get("/{username}", response_class=HTMLResponse)
-async def show_profile(username: str):
-    # user_query = f"SELECT user_id FROM users WHERE username = {username}"
-    # with engine.connect() as conn:
-    #     user_record = conn.execute(text(user_query)).fetchone()
-    #     current_user_id = user_record[0]
-    #     history_query = f"SELECT expression, result FROM log WHERE user_id = {current_user_id} "
-    #     user_logs = conn.execute(text(history_query)).fetchall()
-    #     return templates.TemplateResponse(
-    #         "profile.html", 
-    #     {"request": request, "username": username, "logs": user_logs}
-    # )
-    print('USERNAME:', username)
 # Return solve page
 @app.post('/solve')
 async def get_solve(request:Request):
@@ -113,6 +100,17 @@ async def get_solve(request:Request):
 def favicon():
     return FileResponse('../frontend/static/favicon.ico')
 
+
+# צפייה בפרופיל האישי
+@app.get("/{username}", response_class=HTMLResponse)
+async def show_profile(username: str, request:Request):
+    
+    logs = load_log(username)
+    return templates.TemplateResponse(
+        name="profile.html", 
+        request= request,
+        context={"logs": logs[0].expression}
+    )
 # uvicorn.run(app)
 
 

@@ -58,8 +58,15 @@ class User(Base):
     
 Base.metadata.create_all(engine, checkfirst=True)
 
-def load_log(user_id):
-    session.get()
+def load_log(username):
+    
+    user_id = get_user(username).user_id
+    print('USERID ==', user_id)
+    # statement = select(Log).where(Log.user_id == user_id)
+    statement = select(Log).where(Log.user_id == 1)
+    logs = session.scalars(statement).all()
+
+    return logs
 
 
 # save_data(table, data)
