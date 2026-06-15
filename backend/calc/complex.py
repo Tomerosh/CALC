@@ -8,7 +8,7 @@ def solve_complex(exp):
     fixed_exp = ''
     for char in exp:
         if char == '^':
-            fixed_exp += '**'
+            fixed_exp += '**' 
         elif char.isalpha():
             if fixed_exp[-1] not in OPERATORS:
                 fixed_exp += '*'
@@ -16,13 +16,15 @@ def solve_complex(exp):
             fixed_exp += char.lower()
         else:
             fixed_exp += char
+
+        
     if '=' in fixed_exp:
         left, right = fixed_exp.split('=')
         eq = Eq(sympify(left), sympify(right))
-        return sympy.solve(eq)
+        result = sympy.solve(eq)
     else:
-        eq = sympify(fixed_exp)
-        return eq
+        result = sympify(fixed_exp)
+    return result
     
 
 # Simple
@@ -44,6 +46,3 @@ c7 = '(4x^3-2x^2+5x)/x-3x*4=12x^2-4x+5'
 f1 = '(2x^2-4x+3)/(x-2)+5x*3=(4x^2+1)/(x+2)'
 f2 = '10%90'
 
-
-
-# print(solve_complex(f2))

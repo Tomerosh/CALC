@@ -1,7 +1,4 @@
-import sympy
-
 from fastapi import APIRouter, Form
-
 # from db import save_log
 from db import save_log
 from calc.calc_utils import deconstruct, fix_result
@@ -29,7 +26,7 @@ async def solve(expression:str = Form(...)):
             result = fix_result(result)
         else:
             result, path = 'Cannot Solve', []
-
+        print(result, path)
         # Define conclusion for response
         conclusion = {
             "user_id": 1,

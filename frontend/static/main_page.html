@@ -6,10 +6,13 @@
     </head>
 
     <body>
+        <script id="jinja-data" type="application/json">
+            {{ username | tojson }}
+        </script>
         <div class="header-container">
             <h1 id="welcome">Calculator ++</h1>
             
-            <a href="/{{username}}" class="profile-link" title="expressions history">
+            <a onclick="show_profile()" class="profile-link" title="expressions history">
                 <img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" alt="Profile History">
             </a>
         </div>
@@ -23,7 +26,6 @@
         <div id="result_box"></div>
 
         <script src="static/main.js"></script> 
-        <script>console.log('TEST123')</script> 
         <link img = "https://cdn-icons-png.flaticon.com/128/1144/1144760.png">
       
     </body>
