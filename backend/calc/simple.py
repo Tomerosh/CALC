@@ -1,5 +1,4 @@
-from calc.calc_utils import brackets
-from calc.calc_utils import join_exp
+from calc.calc_utils import join_exp, calculate, brackets
 
 def solve_basic(comps):
     path = []
@@ -7,7 +6,7 @@ def solve_basic(comps):
     while '(' in components:
         sub_comps, start, stop = brackets(components)
         result, sub_path = operate(sub_comps)
-        components[start:stop] = [result]
+        components[start:stop] = result
         path += sub_path
     
     result, sub_path = operate(components)

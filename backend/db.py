@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from sqlalchemy.ext.hybrid import hybrid_property
 
 DB_USERNAME = 'postgres'
-DB_PASSWORD = '2409'
+DB_PASSWORD = '29022024'
 
 engine = create_engine(f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@localhost:5432/postgres", echo=True)
 Session = sessionmaker(bind=engine)
@@ -40,7 +40,6 @@ class User(Base):
     def password(self):
         """Prevent the password hash from being read directly."""
         raise AttributeError("Password is not a readable attribute.")
-
     @password.setter
     def password(self, plaintext_password: str):
         """Automatically salt and hash the password when it is set."""
@@ -71,30 +70,14 @@ def load_log(user_id):
 async def save_log(conclusion:object):
 
     log = Log(
-        # time= datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
         user_id= conclusion['user_id'],
         expression= conclusion['expression'], 
         type= conclusion['type'],
         result= conclusion['result'],
     )
-    # exp_id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    # time: Mapped[datetime]
-    # user_id: Mapped[int]
-    # type: Mapped[str]
-    # expression: Mapped[str]
-    # result: Mapped[str]
     session.add(log)
     session.commit()
     
-# log = Log(
-#     user_id= conclusion['user_id'],
-#     expression= conclusion['expression'],
-#     type= conclusion['type'],
-#     result= conclusion['result'],
-# )
-
-# save_log(log)
-
 def create_user(username, password):
     user = User(username=username)
     user.password = password
