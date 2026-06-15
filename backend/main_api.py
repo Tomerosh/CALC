@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, text
 from db import create_user, get_user
 import solve
+from profile_api import router as profile_router
 
 app = FastAPI()
 
@@ -18,6 +19,7 @@ app.add_middleware(
 )
 app.mount("/static", StaticFiles(directory="../frontend/static"), name="static")
 app.include_router(solve.router)
+app.include_router(profile_router)
 
 templates = Jinja2Templates(directory="../frontend/static")
 
