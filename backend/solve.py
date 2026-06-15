@@ -26,7 +26,7 @@ async def solve(expression:str = Form(...)):
             result = fix_result(result)
         else:
             result, path = 'Cannot Solve', []
-
+        print(result, path)
         # Define conclusion for response
         conclusion = {
             "user_id": 1,

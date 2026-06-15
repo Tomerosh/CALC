@@ -87,7 +87,12 @@ class Variable():
             if value.is_integer():
                 value = int(value)
         super.__setattr__(self, name, value)
-    
+        
+    def __contains__(self, item):
+        for i in item:
+            if self == i:
+                return True
+        return False
 
 class Number():
     def __init__(self, value, power=1):

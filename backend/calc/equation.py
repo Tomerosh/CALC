@@ -1,12 +1,13 @@
 from calc.calc_utils import OPERATORS, brackets, join_exp, calculate
 from calc.terms import Number, Variable
 
+# Transfer variable to right and numbers to left
 def transfer(eq, i):
     equation = eq.copy()
     path = []
     j = 0
     while j < len(equation[i]):
-        print(path)
+        print(eq)
         if i == 0:
             if isinstance(equation[i][j], Number):
                 description = f'Transfer Number {equation[i][j]} right'
@@ -43,22 +44,33 @@ def transfer(eq, i):
         j += 1
         
     return equation, path
-def distribute(comps, operand, operator, op_side):
-    result = []
-    print('DISTRIBUTE: ', comps, operand)
-    for comp in comps:
-        res = comp
-        if comp not in OPERATORS:
-            if operator == '*':
-                res = comp*operand
-            else:
-                if op_side == 'left':
-                    res = operand/comp
+
+# Distribute brackets with variables
+def distribute(comps, operands):
+    result = comps.copy()
+    print('DISTRIBUTE: ', comps, operands)
+    for i in range(len(result)):
+        if result[i] not in OPERATORS:
+            print('TEST', result[i])
+            res = result[i]
+            print(result[i])
+            if operands.get('left'):
+                if operands['left']['op'] == '*':
+                    res = operands['left']['value']*result[i]
                 else:
-                    res = comp/operand
-        result.append(res)
+                    res = operands['left']['value']/result[i]
+                result[i] = res
+            if operands.get('right'):
+                if operands['right']['op'] == '*':
+                    res = operands['right']['value']*result[i]
+                else:
+                    res = operands['right']['value']/result[i]
+                result[i] = res
+
+    print('RESULT:', result)
     return result
         
+# Solve equation with one variable (no power)
 def solve_equation(comps):
     print('Solving equation')
     path = [] # path memory
@@ -78,17 +90,28 @@ def solve_equation(comps):
                     else:
                         step['expression'] = join_exp(equation[0] + ['='] + equation[1][:start] + step['expression'] + equation[1][stop+1:])
                 if len(result) > 1:
-                    equation[i][start:stop] = ['('] + result + [')']
+                    operands = {}
+                    bottom = start
+                    top = stop
                     if start > 0:
-                        if equation[i][start-1] in '/\\*':
-                            description = f'Distribute brackets {equation[i][start-2:stop]}'
-                            result = distribute(equation[i][start+1:stop-1], equation[i][start-2], equation[i][start-1], 'left')
-                            equation[i][start-2:stop] = result
+                        if equation[i][start-1] == '/' or equation[i][start-1] == '*' or equation[i][start-1] == '\\':
+                            operands['left'] =  {"value": equation[i][start-2], "op": equation[i][start-1]}
+                            bottom = start -2
                     if stop < len(equation[i]) -1:
-                        if equation[i][stop+1] in '/\\*':
-                            description = f'Distribute brackets {equation[i][start:stop+3]}'
-                            result = distribute(equation[i][start+1:stop-1], equation[i][stop+1], equation[i][stop+1], 'right')
-                            equation[i][start:stop+3] = result
+                        if equation[i][stop] == '/' or equation[i][stop] == '*' or equation[i][stop] == '\\':
+                            operands['right'] = {'value': equation[i][stop+1], 'op':equation[i][stop]} 
+                            top = stop + 2
+                    
+                    if len(operands.keys()):
+                        description = f'Distribute brackets {join_exp(equation[i][bottom:top])}'
+                        result = distribute(equation[i][start+1:stop-1], operands)
+                        equation[i][bottom:top] = result
+                        if i == 0:
+                            expression = join_exp(equation[0] + ['='] + equation[1])
+                        else:
+                            expression = join_exp(equation[0] + ['='] + equation[1])
+                        sub_path += [{"expression": expression, "description": description}]
+                        print(result, sub_path)
                 else:
                     equation[i][start:stop] = result
 

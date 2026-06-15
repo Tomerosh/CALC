@@ -9,6 +9,7 @@ def power(num, pow):
     return num ** pow
 
 def multipy(num1, num2):
+    print('MULTIPLY', num1, num2)
     return num1 * num2
 
 def divide(num1, num2):
@@ -117,18 +118,18 @@ def deconstruct(expression:str):
                 if len(current_comp):
                     val = current_comp
                     current_comp = ''
-                    comps.append(Variable(char, val))
-                    vars.add(char)
+                    comps.append(Variable(char.lower(), val))
+                    vars.add(char.lower())
                 else:
-                    comps.append(Variable(char))
-                    vars.add(char)
+                    comps.append(Variable(char.lower()))
+                    vars.add(char.lower())
 
             elif char in OPERATORS + ['(', ')']:
                 if len(current_comp):
                     if is_num(current_comp):
                         comps.append(Number(current_comp))
                     else: 
-                        var = Variable(current_comp)
+                        var = Variable(current_comp.lower())
                         comps.append(var)
                         vars.add(var.name)
 
@@ -181,7 +182,7 @@ def int_result(result):
             return str(result)
     except TypeError:
         # Result contains vars
-        return result
+        return str(result)
 
 # Handle results list 
 def fix_result(result:list):
@@ -193,11 +194,10 @@ def fix_result(result:list):
         for i in range(result_count):
             if isinstance(result[i], dict):
                 for key in result[i].keys():
-                    fixed_result += f'{key} = {int_result(result[i][key])}'
+                    fixed_result += f'{key} = {stint_result(result[i][key])}'
             else:
                 fixed_result += str(float(result[i]))
             fixed_result += " | " if i < result_count - 1 else ''
     else:
         fixed_result = int_result(result)
-
     return fixed_result
