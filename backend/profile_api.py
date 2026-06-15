@@ -12,23 +12,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 frontend_dir = BASE_DIR / "frontend"
 templates = Jinja2Templates(directory=str(frontend_dir))
 
-# @router.get("/{username}", response_class=HTMLResponse)
-# async def show_profile(request: Request, username: str):
-#     with engine.connect() as conn:
-#         user_id = conn.execute(
-#             text("SELECT user_id FROM users WHERE username = :name"), 
-#             {"name": username}
-#         ).fetchone()[0]
+@router.get("/{username}", response_class=HTMLResponse)
+async def show_profile(request: Request, username: str):
+    with engine.connect() as conn:
+        user_id = conn.execute(
+            text("SELECT user_id FROM users WHERE username = :name"), 
+            {"name": username}
+        ).fetchone()[0]
 
-#     user_logs = conn.execute(
-#             text("SELECT expression, result FROM log WHERE user_id = :uid"), 
-#             {"uid": user_id}
-#         ).fetchall()
+    user_logs = conn.execute(
+            text("SELECT expression, result FROM log WHERE user_id = :uid"), 
+            {"uid": user_id}
+        ).fetchall()
     
-#     return templates.TemplateResponse(
-#             "profile.html", 
-#             {"request": request, "username": username, "logs": user_logs}
-#         )
+    return templates.TemplateResponse(
+            "profile.html", 
+            {"request": request, "username": username, "logs": user_logs}
+        )
 
 from fastapi.responses import HTMLResponse
 
