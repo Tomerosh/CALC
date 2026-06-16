@@ -6,16 +6,26 @@
 
 </head>
 <body>
-    <h1>My profile</h1>
-    <table border="2">
-        <tr>
-            <th>user_id</th>
-            <th>time</th>
-            <th>expression</th>
-            <th>type</th>
-            <th>result</th>
-        </tr>
-    </table>
+<div class="header-container">
+    <h1>My Profile</h1>
+    
+    <a href="javascript:history.back()" class="home-link" title="Back to Calculator">
+        <img src="https://cdn-icons-png.flaticon.com/128/25/25694.png" alt="Home">
+    </a>
+</div>
+    <div class="table-container">
+        <h2>Exercise history</h2>
+        <table id='log-table' border="2">
+            <tr>
+                <th>Expression ID</th>
+                <th>Time</th>
+                <th>Type</th>
+                <th>Expression</th>
+                <th>Result</th>
+            </tr>
+        </table>
+    </div>
+    
     <script id="jinja-data" type="application/json">
         {{ logs | tojson }}
     </script>

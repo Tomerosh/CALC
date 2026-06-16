@@ -1,27 +1,81 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Calculator++ | Login page</title>
-        <link rel="stylesheet" href="/static/login_page_style.css">
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator++ | Login</title>
+    <link rel="stylesheet" href="/static/login_page_style.css">
+</head>
+<body>
 
-    <body>
-        <h1>Welcome to our calculator</h1>
-
-        <form id="login_form" action="/login" method="post">
-            <input id="form-name" type="text" name="username" placeholder="Enter Username" required>
-            
-            <input id="form-name" type="text" name="password" placeholder="Enter password" required>
-            
-            <button type="sumbit">Login</button>
-
-            <br>
-
-            <div class="signup-link">
-                Don't have an account? <a href="/sign_up">Sign up</a>
+    <div class="split-container">
+        
+        <div class="left-panel" id="carousel">
+            <div class="logo">CALC++</div>
+            <div class="carousel-content">
+                <h2 id="feature-title">Solve Exercises</h2>
+                <p id="feature-desc">Get detailed step-by-step mathematical solutions.</p>
+                
+                <div class="dots">
+                    <div class="dot active" id="dot-0"></div>
+                    <div class="dot" id="dot-1"></div>
+                    <div class="dot" id="dot-2"></div>
+                </div>
             </div>
+        </div>
 
-        </form>
-        <script src="static/login.js"></script>
+        <div class="right-panel">
+            <h1>WELCOME BACK!</h1>
+            <p>Don't have an account? <a href="/sign_up">Sign up</a></p>
 
-     </body>
+            <form id="login_form" action="/login" method="post">
+                <input id="form-name" type="text" name="username" placeholder="Username" required>
+                <input id="form-pass" type="password" name="password" placeholder="Enter your password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+    const features = [
+            {
+               title: "Simple Math",
+                desc: "Get quick answers for basic math calculations.",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOcu1DLq603_ohNKovTpPVZWyUWXGOqxfs_yezK_CPwQ&s=10"
+            },
+            {
+                title: "Combining like terms",
+                desc: "Make long expressions shorter by grouping similar parts together.",
+                image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000&auto=format&fit=crop"
+            },
+            {
+                title: "Solve Equations",
+                desc: "Easily find the value of X with step-by-step solutions.",
+                image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?q=80&w=1000&auto=format&fit=crop"
+            }
+        ];
+
+        let currentIndex = 0;
+        const panel = document.getElementById('carousel');
+        const titleEl = document.getElementById('feature-title');
+        const descEl = document.getElementById('feature-desc');
+        const dots = [document.getElementById('dot-0'), document.getElementById('dot-1'), document.getElementById('dot-2')];
+
+        function updateCarousel() {
+            currentIndex = (currentIndex + 1) % features.length;
+            const currentFeature = features[currentIndex];
+            
+            titleEl.textContent = currentFeature.title;
+            descEl.textContent = currentFeature.desc;
+            panel.style.backgroundImage = `linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8)), url('${currentFeature.image}')`;
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentIndex].classList.add('active');
+        }
+
+        setInterval(updateCarousel, 4000);
+    </script>
+
+</body>
+</html>

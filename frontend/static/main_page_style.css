@@ -1,115 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg-color: #0f172a;
+    --panel-bg: #1e293b;
+    --accent-color: #2563eb;
+    --text-main: #ffffff;
+    --text-muted: #94a3b8;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    background-color: #f4f7f6;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 100px;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
     margin: 0;
     min-height: 100vh;
-    /* קריטי: מגדיר את ה-body כנקודת הייחוס עבור המיקום האבסולוטי של הלוגו */
-    position: relative; 
+    display: flex;
+    flex-direction: column;
+}
+
+input, button, table, th, td {
+    font-family: 'Inter', sans-serif;
+}
+
+.header-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 h1 {
-    color: #333;
+    font-size: 22px;
+    color: var(--text-main);
+    letter-spacing: 1px;
     margin: 0;
 }
 
-/* ה-container של הראש כעת רק דואג למרווח מלמטה */
-.header-container {
-    margin-bottom: 40px;
-    text-align: center;
-}
-
-/* מיקום לוגו הפרופיל בדיוק בצד ימין למעלה */
-.profile-link {
-    position: absolute;
-    top: 20px;    /* מרחק של 20 פיקסלים מהחלק העליון */
-    right: 20px;  /* מרחק של 20 פיקסלים מצד ימין */
-}
-
-/* עיצוב התמונה של האייקון */
-.profile-link img {
-    width: 45px;
-    height: 45px;
-    cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-/* אפקט מעבר עכבר */
-.profile-link img:hover {
-    transform: scale(1.1);
-    opacity: 0.8;
-}
-
-/* עיצוב הטופס של המחשבון (נשאר כפי שהיה) */
-form {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.header-actions {
     display: flex;
-    flex-direction: column;
-    width: 350px;
+    gap: 12px;
+    align-items: center;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(37, 99, 235, 0.15);
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid rgba(37, 99, 235, 0.3);
+}
+
+.profile-link img {
+    width: 24px;
+    height: 24px;
+    filter: invert(1);
+}
+
+.profile-link:hover {
+    background-color: var(--accent-color);
+    transform: scale(1.05);
+}
+
+.logout-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logout-link img {
+    width: 24px;
+    height: 24px;
+    filter: invert(1);
+}
+
+.logout-link:hover {
+    background-color: #ef4444;
+    border-color: #dc2626;
+    transform: scale(1.05);
+}
+
+form {
+    background: var(--panel-bg);
+    margin: 80px auto 0 auto;
+    padding: 50px;
+    border-radius: 24px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-sizing: border-box;
 }
 
 input {
-    padding: 12px;
+    width: 100%;
+    padding: 18px;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-input:focus {
-    border-color: #28a745;
-    outline: none;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    box-sizing: border-box;
 }
 
 button {
-    padding: 12px;
-    background-color: #28a745;
+    width: 100%;
+    padding: 18px;
+    background: var(--accent-color);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 12px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: 0.3s;
 }
 
 button:hover {
-    background-color: #218838;
+    filter: brightness(1.1);
 }
 
 #result_box {
+    margin: 20px auto 0;
+    max-width: 450px;
+    color: white;
+}
+
+.math-types-list {
+    width: 100%;
+    margin-top: 35vh;
     display: flex;
-    flex:1;
     flex-direction: column;
-    text-align: center;
-    font-weight: 700;
-    gap: 10px;
-
 }
 
-.result_text {
-    color: #218838;
-}
-
-h4 {
-    margin: 0;
-}
-h5 {
-    margin: 0;
-}
-
-.result_step {
+.type-banner {
+    width: 100%;
+    height: 60vh;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-block: 15px;
-    font-size: 14px;
-    font-weight: 500;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.type-banner h2 {
+    margin: 0 0 15px 0;
+    color: #ffffff;
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.9);
+}
+
+.type-banner p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 20px;
+    font-weight: 500;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+}

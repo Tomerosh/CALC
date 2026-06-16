@@ -1,9 +1,20 @@
 // const username = JSON.parse(document.getElementById('jinja-data').textContent);
 const logs = JSON.parse(document.getElementById('jinja-data').textContent);
 console.log('LOGS:', logs)
+const table = document.getElementById("log-table");
+console.log(logs[0].exp_id)
+for (log of logs){
+    console.log(log)
+table.innerHTML += `<tr>
+            <th>${String(log.exp_id)}</th>
+            <th>${String(log.time)}</th>
+            <th>${String(log.type)}</th>
+            <th>${String(log.expression)}</th>
+            <th>${String(log.result)}</th>
+        </tr>`
+}
 
-
-
+        
 
 // const form = document.getElementById("exp-form");
 // form.addEventListener('submit', function (event) {

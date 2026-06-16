@@ -9,23 +9,49 @@
         <script id="jinja-data" type="application/json">
             {{ username | tojson }}
         </script>
-        <div class="header-container">
-            <h1 id="welcome">Calculator ++</h1>
-            
-            <a onclick="show_profile()" class="profile-link" title="expressions history">
-                <img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" alt="Profile History">
-            </a>
+
+    <div class="header-container">
+            <h1 id="welcome">Calculator++</h1>
+        
+            <div class="header-actions">
+                <a onclick="show_profile()" class="profile-link" title="Expressions history">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" alt="History">
+                </a>
+                
+                <a onclick="login()" class="logout-link" title="Logout">
+                    <img src="https://cdn-icons-png.flaticon.com/128/6367/6367984.png" alt="Logout">
+                </a>
+            </div>
         </div>
 
         <form id="exp-form" action="/solve/" method="post">
             <input type="text" name="expression" placeholder="Enter an expression" required>
-           
+            
             <input type="text" name="solution" placeholder="Insert your solution (optional)">
             <button type="sumbit">calc</button>
         </form>
+
         <div id="result_box"></div>
 
         <script src="static/main.js"></script> 
         <link img = "https://cdn-icons-png.flaticon.com/128/1144/1144760.png">
-      
+        
+        <div class="math-types-list">
+            
+            <div class="type-banner" style="background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.8)), url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOcu1DLq603_ohNKovTpPVZWyUWXGOqxfs_yezK_CPwQ&s=10');">
+                <h2>Simple Math</h2>
+                <p>Get quick answers for basic math calculations.</p>
+            </div>
+
+            <div class="type-banner" style="background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000&auto=format&fit=crop');">
+                <h2>Combining like terms</h2>
+                <p>Make long expressions shorter by grouping similar parts together.</p>
+            </div>
+
+            <div class="type-banner" style="background-image: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1509228468518-180dd4864904?q=80&w=1000&auto=format&fit=crop');">
+                <h2>Solve Equations</h2>
+                <p>Easily find the value of X with step-by-step solutions.</p>
+            </div>
+
+        </div>
     </body>
