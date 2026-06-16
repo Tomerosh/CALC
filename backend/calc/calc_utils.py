@@ -55,22 +55,14 @@ def join_exp(comps):
             exp += str(com)
     return exp
 
-#DELETE#
-def print_expression(exp):
-    for comp in exp:
-        print(comp, end='')
-    print('')
-
 def is_num(comp:str):
     if isinstance(comp, float):
         return True
     component = comp.replace('-', '')
     return component.isdigit() or '.' in component
 
-def add_var(var_dict, var, num):
-    if not var_dict.get(var):
-        var_dict[var] = 0
-    var_dict[var] += num
+def is_correct(solution, result):
+    pass
 
 # Find the most inner brackets
 # Returns sub_list of components, start and stop indexes in og list
@@ -81,16 +73,16 @@ def brackets(components):
     return sub_comps, open, close+1
     
 # Operate all Powers (**) in expression
-def power_exp(comps:list):
-    new_comps = []
-    i = -1
-    powers_count = comps.count('^')
-    for j in range(powers_count):
-        i = comps.index('^', i+1)
-        result = comps[i-1] ** comps[i+1]
-        if result:
-            new_comps = comps[:i-1] + [result] + comps[i+min(2, len(comps)-1):]
-    return new_comps
+# def power_exp(comps:list):
+#     new_comps = []
+#     i = -1
+#     powers_count = comps.count('^')
+#     for j in range(powers_count):
+#         i = comps.index('^', i+1)
+#         result = comps[i-1] ** comps[i+1]
+#         if result:
+#             new_comps = comps[:i-1] + [result] + comps[i+min(2, len(comps)-1):]
+#     return new_comps
 
 
 def deconstruct(expression:str): 

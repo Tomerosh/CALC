@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Form, Request
-from db import save_log
+from fastapi import APIRouter, Request
+from db import get_user, save_log
 from calc.calc_utils import deconstruct, fix_result
 from calc.simple import solve_basic
 from calc.equation import solve_equation
@@ -10,10 +10,10 @@ router = APIRouter()
 
 # Main expression solving logic
 @router.post('/solve/')
-async def solve(request:Request, expression:str = Form(...)):
+async def solve(request:Request):
+        req = await request.json()
+        expression, solution, username = req.values()
     # try:
-
-
         # req = request.get('user_id')   
         # data = req.decode()
         # print('DATA:', req)
@@ -39,10 +39,16 @@ async def solve(request:Request, expression:str = Form(...)):
         # If no expression type specified
         else:
             result, path = 'Cannot Solve', []
+            
+        # Check if solution correct
+        if solution:
+            print('SOLUTION')
+        # solution_correct = is_correct(result, solution)
 
+        user_id = get_user(username).user_id
         # Define conclusion for response
         conclusion = {
-            "user_id": 1,
+            "user_id": user_id,
             "expression": expression,
             "type": exp_type,
             "result": result,
