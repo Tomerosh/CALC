@@ -1,24 +1,23 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Calculator++ | Sign up page</title>
-        <link rel="stylesheet" href="/static/login_page_style.css">
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator++ | Sign Up</title>
+    <link rel="stylesheet" href="/static/sign_up_style.css">
+</head>
+<body>
 
-    <body>
+    <div class="signup-container">
         <h1>Sign up to calculator</h1>
+        <p>Already have an account? <a href="/">Login</a></p>
 
         <form action="/sign_up" method="post">
             <input type="text" name="username" placeholder="Choose Username" required>
-            
-            <input type="text" name="password" placeholder="Choose password" required>
-            
-            <button type="sumbit">Sign up</button>
-            <br>
-
-            <div class="signup-link">
-                Already have an account? <a href="/">Login</a>
-            </div>
+            <input type="password" name="password" placeholder="Choose password" required>
+            <button type="submit">Sign up</button>
         </form>
+    </div>
 
-     </body>
+</body>
+</html>
