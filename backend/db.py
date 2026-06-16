@@ -58,14 +58,22 @@ class User(Base):
     
 Base.metadata.create_all(engine, checkfirst=True)
 
-def load_log(username):
+def get_db():
+    db = Session()
+    try:
+        yield db  # This sends the session to your endpoint
+    finally:
+        db.close() 
+
+def load_logs(username):
     
     user_id = get_user(username).user_id
     print('USERID ==', user_id)
     # statement = select(Log).where(Log.user_id == user_id)
-    statement = select(Log).where(Log.user_id == 1)
-    logs = session.scalars(statement).all()
-
+    logs = session.query(Log).where(Log.user_id == 1).all()
+    # statement = select(Log).where(Log.user_id == 1)
+    # logs = session.scalars(statement).all()
+    print('LOGS:', logs)
     return logs
 
 
