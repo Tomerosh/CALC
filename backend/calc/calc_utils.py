@@ -194,7 +194,7 @@ def fix_result(result:list):
         for i in range(result_count):
             if isinstance(result[i], dict):
                 for key in result[i].keys():
-                    fixed_result += f'{key} = {stint_result(result[i][key])}'
+                    fixed_result += f'{key} = {str(int_result(result[i][key]))}'
             else:
                 fixed_result += str(float(result[i]))
             fixed_result += " | " if i < result_count - 1 else ''
