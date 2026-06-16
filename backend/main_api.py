@@ -1,10 +1,13 @@
-from fastapi import APIRouter, FastAPI, Form, Request, status
+from fastapi import APIRouter, FastAPI, Form, Request, status, Depends
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import FileResponse, HTMLResponse, Response, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, text
-from db import create_user, get_user, load_log
+from sqlalchemy.orm import Session
+
+from db import Log, create_user, get_db, get_user, load_logs
 import solve
 # from profile_api import router as profile_router
 
@@ -103,13 +106,15 @@ def favicon():
 
 # צפייה בפרופיל האישי
 @app.get("/{username}", response_class=HTMLResponse)
-async def show_profile(username: str, request:Request):
+async def show_profile(username: str, request:Request, db: Session = Depends(get_db)):
     
-    logs = load_log(username)
+    logs = db.query(Log).where(Log.user_id == 1).all()
+    logs_json = jsonable_encoder(logs)
+
     return templates.TemplateResponse(
         name="profile.html", 
         request= request,
-        context={"logs": logs[0].expression}
+        context={"logs": logs_json}
     )
 # uvicorn.run(app)
 
