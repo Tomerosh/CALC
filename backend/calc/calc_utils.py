@@ -39,7 +39,7 @@ def calculate(comps):
                     op_index = new_comps.index(op)
                     result = op_group[op]['action'](new_comps[op_index-1], new_comps[op_index+1])
                     if result: 
-                        description = f'{op_group[op]['name']} {new_comps[op_index-1]} {op} {new_comps[op_index+1]}'
+                        description = f"{op_group[op]['name']} {new_comps[op_index-1]} {op} {new_comps[op_index+1]}"
                         new_comps[op_index-1:op_index+2] = [result]
                         path.append({"expression": new_comps.copy(),"description": description})
     

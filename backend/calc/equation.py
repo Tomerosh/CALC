@@ -130,7 +130,7 @@ def solve_equation(comps):
             path += sub_path
     if equation[0][0].value == 0:
         is_equal = equation[0][0] == equation[1][0]
-        result = f'{equation[0][0]} {'=' if is_equal else '!='} {equation[1][0]}'
+        result = f"{equation[0][0]} {'=' if is_equal else '!='} {equation[1][0]}"
     else:
         equation[1].append('/')
         equation[1].append(Number(equation[0][0].value))
