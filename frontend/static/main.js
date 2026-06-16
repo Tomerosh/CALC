@@ -1,4 +1,5 @@
 const username = JSON.parse(document.getElementById('jinja-data').textContent);
+// console.log(username)
 const form = document.getElementById("exp-form");
 form.addEventListener('submit', function (event) {
     event.preventDefault(); // Stops page refresh

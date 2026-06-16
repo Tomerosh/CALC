@@ -1,16 +1,14 @@
-from fastapi import APIRouter, FastAPI, Form, Request, status, Depends
+import solve
+from fastapi import FastAPI, Form, Request, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import FileResponse, HTMLResponse, Response, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
+from db import Log, create_user, get_db, get_user
 
-from db import Log, create_user, get_db, get_user, load_logs
-import solve
-# from profile_api import router as profile_router
-
+# Define fastapi app
 app = FastAPI()
 
 app.add_middleware(
@@ -20,26 +18,23 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.mount("/static", StaticFiles(directory="../frontend/static"), name="static")
-app.include_router(solve.router)
-# app.include_router(profile_router)
 
+# Load static front files
+app.mount("/static", StaticFiles(directory="../frontend/static"), name="static")
 templates = Jinja2Templates(directory="../frontend/static")
 
-#הצגה של העמוד התחברות
+# Link solve router to app
+app.include_router(solve.router)
+
+
 # Display login page
 @app.get("/", response_class=HTMLResponse)
 async def login_page(request: Request):
     return templates.TemplateResponse(name="login_page.html", request=request)
 
-#שליחת מידע והתחברות
+# Login user
 @app.post("/login", response_class=HTMLResponse)
 async def login(request: Request, username: str = Form(...), password: str = Form(...)):
-    
-    # query = f"SELECT user_id, username FROM users WHERE username = '{Login_username}' AND password = '{Login_password}' "
-    # with engine.connect() as conn:
-    #     user_record = conn.execute(text(query)).fetchone()
-    #     if user_record:
     db_user = get_user(username)
     if db_user:
         if db_user.check_password(password):
@@ -48,7 +43,6 @@ async def login(request: Request, username: str = Form(...), password: str = For
 
     return "Username or Password is worng"
         
-#הצגת עמוד הרשמה
 # Display Sign up page
 @app.get("/sign_up", response_class=HTMLResponse)
 async def sign_up_page(request: Request):
@@ -70,17 +64,7 @@ async def sign_up(request: Request, username: str = Form(...), password: str = F
 # Return solve page
 @app.post('/solve')
 async def get_solve(request:Request):
-    # req = await request.json()
-    # print(req)
-    # name = req['username']
-    # password = req['password']
-    # db_user = get_user(name)
-    # if db_user:
-    #     if db_user.check_password(password):
-    #         return templates.TemplateResponse(
-    #         name="main_page.html",
-    #         request=request
-    #         )
+    
     req = await request.body()
     data = req.decode().split('&')
     name = data[0].split('=')[1]
@@ -88,10 +72,11 @@ async def get_solve(request:Request):
     db_user = get_user(name)
     if db_user:
         if db_user.check_password(password):
+            user_id = db_user.user_id
             return templates.TemplateResponse(
             name="main_page.html",
             request=request,
-            context={"username": name}
+            context={"username": name, "user_id": user_id}
             )
     return RedirectResponse('/')
 

@@ -1,6 +1,10 @@
 // const username = JSON.parse(document.getElementById('jinja-data').textContent);
 const logs = JSON.parse(document.getElementById('jinja-data').textContent);
 console.log('LOGS:', logs)
+
+
+
+
 // const form = document.getElementById("exp-form");
 // form.addEventListener('submit', function (event) {
 //     event.preventDefault(); // Stops page refresh

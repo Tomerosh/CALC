@@ -5,17 +5,21 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timezone
 from sqlalchemy.ext.hybrid import hybrid_property
 
+# INSERT DATABASE INFO HERE #
+DB_NAME = 'postgres'
 DB_USERNAME = 'postgres'
 DB_PASSWORD = '29022024'
 
-engine = create_engine(f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@localhost:5432/postgres", echo=True)
+# Define db engine and session
+engine = create_engine(f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@localhost:5432/{DB_NAME}", echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-
+# Base class
 class Base(DeclarativeBase):
     pass
 
+# Log class
 class Log(Base):
     __tablename__ = 'log'
     exp_id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -30,6 +34,7 @@ class Log(Base):
     result: Mapped[str]
     # path: Mapped[list]
 
+# User class
 class User(Base):
     __tablename__ = 'users'
     user_id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -58,6 +63,7 @@ class User(Base):
     
 Base.metadata.create_all(engine, checkfirst=True)
 
+# Get database session and close after finished
 def get_db():
     db = Session()
     try:
@@ -65,8 +71,8 @@ def get_db():
     finally:
         db.close() 
 
+# Load user logs by username
 def load_logs(username):
-    
     user_id = get_user(username).user_id
     print('USERID ==', user_id)
     # statement = select(Log).where(Log.user_id == user_id)
@@ -76,12 +82,7 @@ def load_logs(username):
     print('LOGS:', logs)
     return logs
 
-
-# save_data(table, data)
-#     if table==users
-#         data['username']
-# load_data()
-
+# Save expression conclusion to log table
 async def save_log(conclusion:object):
 
     log = Log(
@@ -93,13 +94,22 @@ async def save_log(conclusion:object):
     session.add(log)
     session.commit()
     
+# Create user in users table
 def create_user(username, password):
-    user = User(username=username)
-    user.password = password
-    session.add(user)
-    session.commit()
+    if not get_user(username):
+        user = User(username=username)
+        user.password = password
+        session.add(user)
+        session.commit()
 
+# Get user from users table
 def get_user(username):
     statement = select(User).where(User.username == username)
     result = session.scalars(statement).first() 
     return result
+
+
+# save_data(table, data)
+#     if table==users
+#         data['username']
+# load_data()
