@@ -9,8 +9,8 @@ function show_profile() {
     window.location.href = `/${username}`
 }
 
-const successIcon = 'https://cdn-icons-png.flaticon.com/128/14090/14090371.png'
-const failIcon = 'https://cdn-icons-png.flaticon.com/128/9426/9426995.png'
+const successIcon = 'https://media.tenor.com/aGvGeHFp14kAAAAm/check-check-mark.webp'
+const failIcon = 'https://media.tenor.com/aRX6P1QWSeAAAAAm/cross.webp'
 const profile_link = document.getElementsByClassName('profile-link');
 profile_link.onclick = show_profile
 async function post_expression() {
