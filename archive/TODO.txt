@@ -1,12 +1,14 @@
 // TODAY
 - Wrong username or password
-- logs score
+- logs score V
 - Equations
 
 // DONE
 - v and x V
 
 // BUGS
+x+1+1
+x+1+x+3
 Infinite loops:
     # 2x-2x=1 
     # 1=0

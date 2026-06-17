@@ -30,7 +30,7 @@ async function post_expression() {
     let type = `<h5>Expression type: ${res.type}<h5>`
     let path = ''
     res.path.map(step => {
-        path += `<div class="result_step" <span>${step.description}</span><span> = </span><span>${step.expression}</span></div>`
+        path += `<div class="result_step" <span>${step.description}:</span><span>${step.expression}</span></div>`
     })
     result_box.innerHTML = solution_correct + result + expression + type + path
     

@@ -6,9 +6,9 @@ from datetime import datetime, timezone
 from sqlalchemy.ext.hybrid import hybrid_property
 
 # INSERT DATABASE INFO HERE #
-DB_NAME = 'middle_project'
+DB_NAME = 'postgres'
 DB_USERNAME = 'postgres'
-DB_PASSWORD = '5432'
+DB_PASSWORD = '2409'
 
 # Define db engine and session
 engine = create_engine(f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@localhost:5432/{DB_NAME}", echo=True)
@@ -32,6 +32,7 @@ class Log(Base):
     type: Mapped[str]
     expression: Mapped[str]
     result: Mapped[str]
+    score: Mapped[str]
     # path: Mapped[list]
 
 # User class
@@ -75,11 +76,7 @@ def get_db():
 def load_logs(username):
     user_id = get_user(username).user_id
     print('USERID ==', user_id)
-    # statement = select(Log).where(Log.user_id == user_id)
-    logs = session.query(Log).where(Log.user_id == 1).all()
-    # statement = select(Log).where(Log.user_id == 1)
-    # logs = session.scalars(statement).all()
-    print('LOGS:', logs)
+    logs = session.query(Log).where(Log.user_id == user_id).all()
     return logs
 
 # Save expression conclusion to log table
@@ -89,6 +86,7 @@ async def save_log(conclusion:object):
         expression= conclusion['expression'], 
         type= conclusion['type'],
         result= conclusion['result'],
+        score= conclusion['score']
     )
     session.add(log)
     session.commit()
