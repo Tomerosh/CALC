@@ -10,14 +10,16 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-main);
+    background: linear-gradient(to bottom, #0f1e36, #000000);
+    background-attachment: fixed;
+    color: #ffffff; /* מכריח את כל הכתב באתר להיות לבן */
     margin: 0;
-    padding: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+    
+    /* הערה: בקובץ של הפרופיל בלבד (profile_style.css), יש לך גם את השורה הבאה. אל תמחק אותה: */
+    /* align-items: center; */
 }
 
 input, button, table, th, td {
@@ -80,7 +82,9 @@ h2, h3 {
     margin: 0 auto 50px auto;
     background-color: var(--panel-bg);
     border-radius: 24px;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    direction: rtl;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -88,6 +92,7 @@ h2, h3 {
 table {
     width: 100%;
     border-collapse: collapse;
+    direction: ltr; 
 }
 
 th {
@@ -99,7 +104,7 @@ th {
     padding: 20px;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-top: none; /* מניעת כפילות עם המסגרת העליונה */
+    border-top: none;
     transition: color 0.3s ease;
 }
 
@@ -112,7 +117,6 @@ td {
     transition: color 0.3s ease;
 }
 
-/* מניעת כפילויות של גבולות בצדדים */
 th:first-child, td:first-child {
     border-left: none;
 }
@@ -121,7 +125,6 @@ th:last-child, td:last-child {
     border-right: none;
 }
 
-/* מניעת כפילות עם המסגרת התחתונה */
 tr:last-child td {
     border-bottom: none;
 }
@@ -138,4 +141,22 @@ tr:hover th {
 tr:first-child th,
 tr:first-child td {
     color: #ffffff;
+}
+
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 0 24px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
