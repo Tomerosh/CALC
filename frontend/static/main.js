@@ -1,5 +1,4 @@
 const username = JSON.parse(document.getElementById('jinja-data').textContent);
-// console.log(username)
 const form = document.getElementById("exp-form");
 form.addEventListener('submit', function (event) {
     event.preventDefault(); // Stops page refresh
@@ -9,17 +8,23 @@ form.addEventListener('submit', function (event) {
 function show_profile() {
     window.location.href = `/${username}`
 }
+
+const successIcon = 'https://cdn-icons-png.flaticon.com/128/14090/14090371.png'
+const failIcon = 'https://cdn-icons-png.flaticon.com/128/9426/9426995.png'
 const profile_link = document.getElementsByClassName('profile-link');
 profile_link.onclick = show_profile
 async function post_expression() {
-    const data = new URLSearchParams(new FormData(form));
+    const formData = new FormData(form);
+    const formDict = Object.fromEntries(formData.entries());
+    formDict.username = username
     const response = await fetch('/solve/', {
         method: 'POST',
-        body: data
+        body: JSON.stringify(formDict)
     })
     const res = await response.json()
     const result_box = document.getElementById("result_box");
-    console.log(res)
+    const solution_correct = `<img src=${successIcon}></img>`
+    console.log('SCORE:', res.score)
     let result = `<h3 class='result_text'>${res.result}</h3>`
     let expression = `<h4>${res.expression}<h4>`
     let type = `<h5>Expression type: ${res.type}<h5>`
@@ -27,7 +32,7 @@ async function post_expression() {
     res.path.map(step => {
         path += `<div class="result_step" <span>${step.description}</span><span> = </span><span>${step.expression}</span></div>`
     })
-    result_box.innerHTML = result + expression + type + path
+    result_box.innerHTML = solution_correct + result + expression + type + path
     
 
 }

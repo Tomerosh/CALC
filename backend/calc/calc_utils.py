@@ -9,7 +9,6 @@ def power(num, pow):
     return num ** pow
 
 def multipy(num1, num2):
-    print('MULTIPLY', num1, num2)
     return num1 * num2
 
 def divide(num1, num2):
@@ -32,7 +31,6 @@ def calculate(comps):
     path = []
     for op_group in OPS:
         for op in op_group.keys():
-            print(op)
             if op in new_comps:
                 op_count = new_comps.count(op)
                 for i in range(op_count):
@@ -55,22 +53,51 @@ def join_exp(comps):
             exp += str(com)
     return exp
 
-#DELETE#
-def print_expression(exp):
-    for comp in exp:
-        print(comp, end='')
-    print('')
-
 def is_num(comp:str):
     if isinstance(comp, float):
         return True
     component = comp.replace('-', '')
     return component.isdigit() or '.' in component
 
-def add_var(var_dict, var, num):
-    if not var_dict.get(var):
-        var_dict[var] = 0
-    var_dict[var] += num
+def calc_score(result, solution):
+    print('Calculating score')
+    print('SOLUTION', solution)
+    print('RESULT', result)
+    score = 0
+    fixed_solution = ''
+    if '=' in solution:
+        solution_equation = solution.split('=')
+        if len(solution_equation) > 1:
+            fixed_solution = {solution_equation[0]: float(solution_equation[1].replace(' ', ''))}
+        else:
+            fixed_solution = float(solution.replace('=', '').replace(' ', ''))
+    else:
+        fixed_solution = float(solution.replace('=', '').replace(' ', ''))
+    print('fixed_solution', fixed_solution)
+    if isinstance(result,list):
+        for res in result:
+            if isinstance(fixed_solution, dict):
+                for sol in fixed_solution.keys():
+                    if fixed_solution[sol] == float(res):
+                        score += .5
+
+            if fixed_solution == float(res):
+                score += .5
+    elif isinstance(result, dict):
+        for res in result.keys():
+            if isinstance(fixed_solution, dict):
+                for sol in fixed_solution.keys():
+                    if sol == res and fixed_solution[sol] == float(result[res]):
+                        score +=1
+            else:
+                if fixed_solution == float(result[res]):
+                    score += 1
+
+    else:
+        if float(solution) == float(result):
+            score += 1
+    print('SCORE:', score)
+    return score
 
 # Find the most inner brackets
 # Returns sub_list of components, start and stop indexes in og list
@@ -81,16 +108,16 @@ def brackets(components):
     return sub_comps, open, close+1
     
 # Operate all Powers (**) in expression
-def power_exp(comps:list):
-    new_comps = []
-    i = -1
-    powers_count = comps.count('^')
-    for j in range(powers_count):
-        i = comps.index('^', i+1)
-        result = comps[i-1] ** comps[i+1]
-        if result:
-            new_comps = comps[:i-1] + [result] + comps[i+min(2, len(comps)-1):]
-    return new_comps
+# def power_exp(comps:list):
+#     new_comps = []
+#     i = -1
+#     powers_count = comps.count('^')
+#     for j in range(powers_count):
+#         i = comps.index('^', i+1)
+#         result = comps[i-1] ** comps[i+1]
+#         if result:
+#             new_comps = comps[:i-1] + [result] + comps[i+min(2, len(comps)-1):]
+#     return new_comps
 
 
 def deconstruct(expression:str): 
@@ -187,17 +214,18 @@ def int_result(result):
 # Handle results list 
 def fix_result(result:list):
     fixed_result = ''
-
     if isinstance(result, list):
-       
         result_count = len(result)
         for i in range(result_count):
             if isinstance(result[i], dict):
                 for key in result[i].keys():
-                    fixed_result += f'{key} = {str(int_result(result[i][key]))}'
+                    fixed_result += f'{key} = {int_result(result[i][key])}'
             else:
                 fixed_result += str(float(result[i]))
             fixed_result += " | " if i < result_count - 1 else ''
+    elif isinstance(result, dict):
+        for key in result.keys():
+            fixed_result += f'{key} = {int_result(result[key])}'
     else:
         fixed_result = int_result(result)
     return fixed_result

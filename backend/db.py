@@ -6,9 +6,9 @@ from datetime import datetime, timezone
 from sqlalchemy.ext.hybrid import hybrid_property
 
 # INSERT DATABASE INFO HERE #
-DB_NAME = 'middle_project'
+DB_NAME = 'postgres'
 DB_USERNAME = 'postgres'
-DB_PASSWORD = '5342'
+DB_PASSWORD = '2409'
 
 # Define db engine and session
 engine = create_engine(f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@localhost:5432/{DB_NAME}", echo=True)
@@ -84,7 +84,6 @@ def load_logs(username):
 
 # Save expression conclusion to log table
 async def save_log(conclusion:object):
-
     log = Log(
         user_id= conclusion['user_id'],
         expression= conclusion['expression'], 
@@ -104,9 +103,10 @@ def create_user(username, password):
 
 # Get user from users table
 def get_user(username):
+    
     statement = select(User).where(User.username == username)
     result = session.scalars(statement).first() 
-    return result
+    return session.query(User).where(User.username == username).first()
 
 
 # save_data(table, data)

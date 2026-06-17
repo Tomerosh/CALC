@@ -12,7 +12,7 @@ def solve_basic(comps):
     result, sub_path = operate(components)
     components = result
     path += sub_path
-    return str(components[0]), path
+    return float(components[0]), path
 
 def operate(components):
     sub_path = []

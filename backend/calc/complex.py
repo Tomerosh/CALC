@@ -17,13 +17,14 @@ def solve_complex(exp):
         else:
             fixed_exp += char
 
-        
+    
     if '=' in fixed_exp:
         left, right = fixed_exp.split('=')
         eq = Eq(sympify(left), sympify(right))
         result = sympy.solve(eq)
     else:
         result = sympify(fixed_exp)
+    print('RAW:', result[0], type(float(result[0])))
     return result
     
 

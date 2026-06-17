@@ -1,16 +1,13 @@
 // const username = JSON.parse(document.getElementById('jinja-data').textContent);
 const logs = JSON.parse(document.getElementById('jinja-data').textContent);
-console.log('LOGS:', logs)
 const table = document.getElementById("log-table");
-console.log(logs[0].exp_id)
-for (log of logs){
-    console.log(log)
+for (let i=logs.length-1;i>=0 ;i--){
 table.innerHTML += `<tr>
-            <th>${String(log.exp_id)}</th>
-            <th>${String(log.time)}</th>
-            <th>${String(log.type)}</th>
-            <th>${String(log.expression)}</th>
-            <th>${String(log.result)}</th>
+            <th>${String(parseInt(i)+1)}</th>
+            <th>${String(logs[i].time)}</th>
+            <th>${String(logs[i].type)}</th>
+            <th>${String(logs[i].expression)}</th>
+            <th>${String(logs[i].result)}</th>
         </tr>`
 }
 

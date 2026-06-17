@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from db import Log, create_user, get_db, get_user
+from db import Log, User, create_user, get_db, get_user
 
 # Define fastapi app
 app = FastAPI()
@@ -92,15 +92,18 @@ def favicon():
 # צפייה בפרופיל האישי
 @app.get("/{username}", response_class=HTMLResponse)
 async def show_profile(username: str, request:Request, db: Session = Depends(get_db)):
-    
-    logs = db.query(Log).where(Log.user_id == 1).all()
-    logs_json = jsonable_encoder(logs)
+    user_data = db.query(User).where(User.username == username).first()
+    if user_data:
+        logs = db.query(Log).where(Log.user_id == user_data.user_id).all()
+        logs_json = jsonable_encoder(logs)
 
-    return templates.TemplateResponse(
-        name="profile.html", 
-        request= request,
-        context={"logs": logs_json}
-    )
+        return templates.TemplateResponse(
+            name="profile.html", 
+            request= request,
+            context={"logs": logs_json}
+        )
+    else:
+        return 'user not found'
 # uvicorn.run(app)
 
 
