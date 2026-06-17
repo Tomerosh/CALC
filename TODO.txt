@@ -1,4 +1,16 @@
 // TODAY
+LOGOUT 
+Infinite loops:
+    # 2x-2x=1 
+    # 1=0
+
+Errors:
+    # 1x=1x - FIXED
+
+
+
+
+
 - Equations v
 - log v
 - users

@@ -9,7 +9,6 @@ def power(num, pow):
     return num ** pow
 
 def multipy(num1, num2):
-    print('MULTIPLY', num1, num2)
     return num1 * num2
 
 def divide(num1, num2):
@@ -32,7 +31,6 @@ def calculate(comps):
     path = []
     for op_group in OPS:
         for op in op_group.keys():
-            print(op)
             if op in new_comps:
                 op_count = new_comps.count(op)
                 for i in range(op_count):
@@ -61,8 +59,45 @@ def is_num(comp:str):
     component = comp.replace('-', '')
     return component.isdigit() or '.' in component
 
-def is_correct(solution, result):
-    pass
+def calc_score(result, solution):
+    print('Calculating score')
+    print('SOLUTION', solution)
+    print('RESULT', result)
+    score = 0
+    fixed_solution = ''
+    if '=' in solution:
+        solution_equation = solution.split('=')
+        if len(solution_equation) > 1:
+            fixed_solution = {solution_equation[0]: float(solution_equation[1].replace(' ', ''))}
+        else:
+            fixed_solution = float(solution.replace('=', '').replace(' ', ''))
+    else:
+        fixed_solution = float(solution.replace('=', '').replace(' ', ''))
+    print('fixed_solution', fixed_solution)
+    if isinstance(result,list):
+        for res in result:
+            if isinstance(fixed_solution, dict):
+                for sol in fixed_solution.keys():
+                    if fixed_solution[sol] == float(res):
+                        score += .5
+
+            if fixed_solution == float(res):
+                score += .5
+    elif isinstance(result, dict):
+        for res in result.keys():
+            if isinstance(fixed_solution, dict):
+                for sol in fixed_solution.keys():
+                    if sol == res and fixed_solution[sol] == float(result[res]):
+                        score +=1
+            else:
+                if fixed_solution == float(result[res]):
+                    score += 1
+
+    else:
+        if float(solution) == float(result):
+            score += 1
+    print('SCORE:', score)
+    return score
 
 # Find the most inner brackets
 # Returns sub_list of components, start and stop indexes in og list
@@ -179,17 +214,18 @@ def int_result(result):
 # Handle results list 
 def fix_result(result:list):
     fixed_result = ''
-
     if isinstance(result, list):
-       
         result_count = len(result)
         for i in range(result_count):
             if isinstance(result[i], dict):
                 for key in result[i].keys():
-                    fixed_result += f'{key} = {str(int_result(result[i][key]))}'
+                    fixed_result += f'{key} = {int_result(result[i][key])}'
             else:
                 fixed_result += str(float(result[i]))
             fixed_result += " | " if i < result_count - 1 else ''
+    elif isinstance(result, dict):
+        for key in result.keys():
+            fixed_result += f'{key} = {int_result(result[key])}'
     else:
         fixed_result = int_result(result)
     return fixed_result

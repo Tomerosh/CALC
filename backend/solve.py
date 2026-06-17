@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 from db import get_user, save_log
-from calc.calc_utils import deconstruct, fix_result
+from calc.calc_utils import calc_score, deconstruct, fix_result
 from calc.simple import solve_basic
 from calc.equation import solve_equation
 from calc.complex import solve_complex
@@ -35,16 +35,16 @@ async def solve(request:Request):
         # Solve anything else
         elif exp_type in ['Complex', 'Simplify Exp']:
             result = solve_complex(expression)
-            result = fix_result(result)
         # If no expression type specified
         else:
             result, path = 'Cannot Solve', []
             
         # Check if solution correct
+        user_score = -1
         if solution:
             print('SOLUTION')
-        # solution_correct = is_correct(result, solution)
-
+            user_score = calc_score(result, solution)
+        result = fix_result(result)
         user_id = get_user(username).user_id
         # Define conclusion for response
         conclusion = {
@@ -52,7 +52,8 @@ async def solve(request:Request):
             "expression": expression,
             "type": exp_type,
             "result": result,
-            "path": path
+            "path": path,
+            "score": user_score
         }
         # Save conclusion to log table
         await save_log(conclusion)

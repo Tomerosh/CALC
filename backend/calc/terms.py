@@ -34,7 +34,10 @@ class Variable():
         if isinstance(other, Variable):
             return self.name == other.name and self.power == other.power
         elif self.value == 0:
-            return 0 == other
+            if isinstance(other, Number):
+                return self.value == other.value
+            elif isinstance(other, (int, float)):
+                return self.value == other
         return False
     
     # Addition
@@ -105,6 +108,15 @@ class Number():
             power = '^' + self.power if self.power != 1 else ''
             return f'{self.value}{power}'
         
+    def __eq__(self, other):
+        if isinstance(other, Number):
+            return self.value == other.value and self.power == other.power
+        elif isinstance(other, Variable):
+            return other == self
+        elif isinstance(other, (int, float)):
+            return self.value == other
+        return False
+    
     def __repr__(self):
         return str(self)
     
