@@ -219,13 +219,13 @@ def fix_result(result:list):
         for i in range(result_count):
             if isinstance(result[i], dict):
                 for key in result[i].keys():
-                    fixed_result += f'{key} = {int_result(result[i][key])}'
+                    fixed_result += f"{key} = {int_result(result[i][key])}"
             else:
                 fixed_result += str(float(result[i]))
             fixed_result += " | " if i < result_count - 1 else ''
     elif isinstance(result, dict):
         for key in result.keys():
-            fixed_result += f'{key} = {int_result(result[key])}'
+            fixed_result += f"{key} = {int_result(result[key])}"
     else:
         fixed_result = int_result(result)
     return fixed_result

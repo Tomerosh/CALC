@@ -1,5 +1,6 @@
+import user_api
 import solve
-from fastapi import FastAPI, Form, Request, Depends
+from fastapi import FastAPI, Form, Request, Depends, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import FileResponse, HTMLResponse, Response, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -25,6 +26,7 @@ templates = Jinja2Templates(directory="../frontend/static")
 
 # Link solve router to app
 app.include_router(solve.router)
+# app.include_router(user_api.router)
 
 
 # Display login page
@@ -41,30 +43,25 @@ async def login(request: Request, username: str = Form(...), password: str = For
             headers = {'Location': '/solve'}
             return Response(content=str({"username": username, "password": password}), headers=headers, status_code=307)
 
-    return "Username or Password is worng"
+    return Response(status_code=status.HTTP_401_UNAUTHORIZED)
         
 # Display Sign up page
 @app.get("/sign_up", response_class=HTMLResponse)
 async def sign_up_page(request: Request):
     return templates.TemplateResponse(name="sign_up_page.html", request=request)
 
-#שליחת מידע והרשמה
+# Handle user registration
 @app.post("/sign_up", response_class=HTMLResponse)
 async def sign_up(request: Request, username: str = Form(...), password: str = Form(...)):
-    # query = f'INSERT INTO users (username, password) VALUES ({username}, {password})'
-    # with engine.connect() as conn:
-    #     conn.execute(text(query))
-    #     conn.commit()
     if get_user(username):
-        return "Username already in use"
+        return Response(status_code=status.HTTP_409_CONFLICT)
     
     create_user(username, password)
-    return "Registration was successful, log in from the login form."
+    return Response(status_code=status.HTTP_201_CREATED)
     
 # Return solve page
 @app.post('/solve')
 async def get_solve(request:Request):
-    
     req = await request.body()
     data = req.decode().split('&')
     name = data[0].split('=')[1]
@@ -82,12 +79,14 @@ async def get_solve(request:Request):
 
 # @app.get("/solve", response_class=HTMLResponse)
 # async def solve_redirect(request:Request):
-#     return RedirectResponse('/')
+#     return templates.TemplateResponse(
+#         name="main_page.html",
+#         request=request,
+#         )
 
 @app.get('/favicon.ico')
 def favicon():
     return FileResponse('../frontend/static/favicon.ico')
-
 
 # צפייה בפרופיל האישי
 @app.get("/{username}", response_class=HTMLResponse)

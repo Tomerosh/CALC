@@ -23,7 +23,7 @@ async function post_expression() {
     })
     const res = await response.json()
     const result_box = document.getElementById("result_box");
-    const solution_correct = `<img src=${successIcon}></img>`
+    const solution_correct = res.score == -1? '':`<img src=${res.score==1? successIcon: failIcon}></img>`
     console.log('SCORE:', res.score)
     let result = `<h3 class='result_text'>${res.result}</h3>`
     let expression = `<h4>${res.expression}<h4>`

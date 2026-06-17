@@ -1,8 +1,10 @@
 // TODAY
 - Wrong username or password
-- v and x
-- Equations
 - logs score
+- Equations
+
+// DONE
+- v and x V
 
 // BUGS
 Infinite loops:
