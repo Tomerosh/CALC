@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
     --bg-color: #0f172a;
     --panel-bg: #1e293b;
@@ -9,24 +10,29 @@
     --accent-hover: #1d4ed8;
 }
 
+* {
+    box-sizing: border-box; 
+}
+
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--bg-color);
+    background: linear-gradient(to bottom, #0f1e36, #000000);
+    background-attachment: fixed;
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     margin: 0;
     padding: 20px;
-    box-sizing: border-box;
 }
 
 .split-container {
     display: flex;
-    flex-direction: row-reverse; /* שורה זו הופכת את הפאנל של התמונות לימין ואת הטופס לשמאל */
+    flex-direction: row-reverse;
     width: 100%;
     max-width: 1000px;
-    height: 600px;
+    min-height: 600px;
     background-color: var(--panel-bg);
     border-radius: 20px;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
@@ -34,17 +40,18 @@ body {
 }
 
 .left-panel {
-    flex: 1;
     position: relative;
     background-size: cover;
     background-position: center;
     transition: background-image 0.5s ease-in-out;
-    background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000&auto=format&fit=crop');
+    background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1632516643720-e7f5d7d6eca8?q=80&w=1000&auto=format&fit=crop');
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 40px;
     color: white;
+    flex: 1;
+    min-width: 300px;
 }
 
 .logo {
@@ -92,11 +99,11 @@ body {
 }
 
 .right-panel {
-    flex: 1;
-    padding: 50px 60px;
+    padding: 50px 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    flex: 0 0 400px;
 }
 
 .right-panel h1 {
@@ -106,18 +113,18 @@ body {
 }
 
 .right-panel p {
-    color: var(--text-muted);
+    color: #64748b;
     margin: 0 0 30px 0;
     font-size: 14px;
 }
 
-.right-panel a {
+a, a:visited {
     color: var(--accent-color);
     text-decoration: none;
     font-weight: 500;
 }
 
-.right-panel a:hover {
+a:hover {
     text-decoration: underline;
 }
 
@@ -125,6 +132,7 @@ form {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    width: 100%;
 }
 
 input {
@@ -135,6 +143,7 @@ input {
     color: white;
     font-size: 15px;
     transition: border-color 0.3s, box-shadow 0.3s;
+    width: 100%;
 }
 
 input::placeholder {
@@ -158,6 +167,7 @@ button {
     cursor: pointer;
     margin-top: 10px;
     transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
 }
 
 button:hover {
@@ -166,4 +176,25 @@ button:hover {
 
 button:active {
     transform: scale(0.98);
+}
+.signup-container p {
+    color: var(--text-muted);
+    margin: 0 0 30px 0;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .split-container {
+        flex-direction: column;
+        min-height: auto;
+    }
+    .left-panel {
+        min-height: 250px;
+        flex: none;
+    }
+    .right-panel {
+        flex: none;
+        width: 100%;
+        padding: 40px 30px;
+    }
 }

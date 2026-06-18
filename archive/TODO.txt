@@ -1,0 +1,19 @@
+// TODAY
+- Wrong username or password
+- logs score V
+- Equations
+
+// DONE
+- v and x V
+
+// BUGS
+x+1+1
+x+1+x+3
+Infinite loops:
+    # 2x-2x=1 
+    # 1=0
+LATER:
+// float variable (2.5x) recognized as num 
+x + x^2 + 4 = (4 + x)(4 - x)
+x^2 + 4 - 10 = 0
+x^2 = 4

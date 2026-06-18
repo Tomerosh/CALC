@@ -7,7 +7,6 @@ def transfer(eq, i):
     path = []
     j = 0
     while j < len(equation[i]):
-        print(eq)
         if i == 0:
             if isinstance(equation[i][j], Number):
                 description = f'Transfer Number {equation[i][j]} right'
@@ -18,29 +17,35 @@ def transfer(eq, i):
                     equation[0].pop(j-1)
                     equation[0].pop(j-1)
                 else:
-                    equation[0].pop(0)
-                    if equation[0][0] == '-':
-                        equation[0][1] = equation[0][1] * -1
-                    equation[0].pop(0)
+                    if len(equation[i]):
+                        equation[0].pop(0)
+                        if equation[0][0] == '-':
+                            equation[0][1] = equation[0][1] * -1
+                        equation[0].pop(0)
+                    else:
+                        equation[i].append(Number(0))
 
                 path.append({"expression": join_exp(equation[0] + ['='] + equation[1]), "description": description})
                 j -= 1
         elif i == 1:
-            if isinstance(equation[i][j], Variable):
-                description = f'Transfer Variable {equation[i][j]} left'
-                if len(equation[0]):
-                    equation[0].append('+')
-                equation[0].append(equation[i][j]*-1)
-                if j != 0:
-                    equation[1].pop(j-1)
-                    equation[1].pop(j-1)
-                else:
-                    equation[1].pop(0)
-                    if equation[1][0] == '-':
-                        equation[1][1] = equation[0][1] * -1
-                    equation[1].pop(0)
-                path.append({"expression": join_exp(equation[0] + ['='] + equation[1]), "description": description})
-                j -= 1
+                if isinstance(equation[i][j], Variable):
+                    description = f'Transfer Variable {equation[i][j]} left'
+                    if len(equation[0]):
+                        equation[0].append('+')
+                    equation[0].append(equation[i][j]*-1)
+                    if j != 0:
+                        equation[1].pop(j-1)
+                        equation[1].pop(j-1)
+                    else:
+                        equation[1].pop(0)
+                        if len(equation[i]):
+                            if equation[1][0] == '-':
+                                equation[1][1] = equation[0][1] * -1
+                            equation[1].pop(0)
+                        else:
+                            equation[i].append(Number(0))
+                    path.append({"expression": join_exp(equation[0] + ['='] + equation[1]), "description": description})
+                    j -= 1
         j += 1
         
     return equation, path
@@ -48,12 +53,9 @@ def transfer(eq, i):
 # Distribute brackets with variables
 def distribute(comps, operands):
     result = comps.copy()
-    print('DISTRIBUTE: ', comps, operands)
     for i in range(len(result)):
         if result[i] not in OPERATORS:
-            print('TEST', result[i])
             res = result[i]
-            print(result[i])
             if operands.get('left'):
                 if operands['left']['op'] == '*':
                     res = operands['left']['value']*result[i]
@@ -67,7 +69,6 @@ def distribute(comps, operands):
                     res = operands['right']['value']/result[i]
                 result[i] = res
 
-    print('RESULT:', result)
     return result
         
 # Solve equation with one variable (no power)
@@ -129,16 +130,16 @@ def solve_equation(comps):
             equation, sub_path = transfer(equation, i)
             path += sub_path
     if equation[0][0].value == 0:
-        is_equal = equation[0][0] == equation[1][0]
-        result = f"{equation[0][0]} {'=' if is_equal else '!='} {equation[1][0]}"
+        # is_equal = equation[0][0] == equation[1][0]
+        result = {0: equation[1][0]}
     else:
         equation[1].append('/')
         equation[1].append(Number(equation[0][0].value))
         equation[0][0].value = 1
         path.append({"expression": join_exp(equation[0] + ['='] + equation[1]),
                     "description": f"Isolate Variable {equation[0][0].name}"})
-        result = f'{equation[0][0].name} = {equation[1][0] / equation[1][2]}'
-        path.append({"expression": join_exp(result),
+        result = {equation[0][0].name: equation[1][0] / equation[1][2]}
+        path.append({"expression": join_exp([equation[0][0].name, '=', equation[1][0] / equation[1][2]]),
                     "description": f"Divide Numbers {equation[1][0]} / {equation[1][2]}"})
         
 

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator++ | Sign Up</title>
+    <link rel="stylesheet" href="/static/sign_up.css">
+</head>
+<body>
+
+    <div class="signup-container">
+        <h1>Sign up to CALC++</h1>
+        <p>Already have an account? <a href="/">Login</a></p>
+
+        <form id="sign-form" action="/sign_up" method="post">
+            <input id="form-name" type="text" name="username" placeholder="Choose Username" required>
+            <input id="form-pass" type="password" name="password" placeholder="Choose password" required>
+            <button type="submit">Sign up</button>
+        </form>
+    </div>
+    <script src="static/sign_up.js"></script>
+
+</body>
+</html>
