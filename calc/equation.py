@@ -139,7 +139,7 @@ def solve_equation(comps):
         path.append({"expression": join_exp(equation[0] + ['='] + equation[1]),
                     "description": f"Isolate Variable {equation[0][0].name}"})
         result = {equation[0][0].name: equation[1][0] / equation[1][2]}
-        path.append({"expression": join_exp(result),
+        path.append({"expression": join_exp([equation[0][0].name, '=', equation[1][0] / equation[1][2]]),
                     "description": f"Divide Numbers {equation[1][0]} / {equation[1][2]}"})
         
 

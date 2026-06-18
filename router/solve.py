@@ -11,12 +11,9 @@ router = APIRouter()
 # Main expression solving logic
 @router.post('/solve/')
 async def solve(request:Request):
+    try:
         req = await request.json()
         expression, solution, username = req.values()
-    # try:
-        # req = request.get('user_id')   
-        # data = req.decode()
-        # print('DATA:', req)
 
         # Set response vars
         result = 0
@@ -42,7 +39,6 @@ async def solve(request:Request):
         # Check if solution correct
         user_score = -1
         if solution:
-            print('SOLUTION')
             user_score = calc_score(result, solution)
         result = fix_result(result)
         user_id = get_user(username).user_id
@@ -59,6 +55,6 @@ async def solve(request:Request):
         await save_log(conclusion)
 
         return conclusion
-    # except Exception as e:
-    #     print('ERROR: ', e,)
-    #     return {"expression": expression,"result": 'Failed', "path": []}
+    except Exception as e:
+        print('ERROR: ', e,)
+        return {"expression": expression,"result": 'Failed', "path": [], "score": -1}

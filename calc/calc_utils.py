@@ -60,44 +60,47 @@ def is_num(comp:str):
     return component.isdigit() or '.' in component
 
 def calc_score(result, solution):
-    print('Calculating score')
-    print('SOLUTION', solution)
-    print('RESULT', result)
-    score = 0
-    fixed_solution = ''
-    if '=' in solution:
-        solution_equation = solution.split('=')
-        if len(solution_equation) > 1:
-            fixed_solution = {solution_equation[0]: float(solution_equation[1].replace(' ', ''))}
+    try:
+        print('Calculating score')
+        print('SOLUTION', solution)
+        print('RESULT', result)
+        score = 0
+        fixed_solution = ''
+        if '=' in solution:
+            solution_equation = solution.split('=')
+            if len(solution_equation) > 1:
+                fixed_solution = {solution_equation[0]: float(solution_equation[1].replace(' ', ''))}
+            else:
+                fixed_solution = float(solution.replace('=', '').replace(' ', ''))
         else:
             fixed_solution = float(solution.replace('=', '').replace(' ', ''))
-    else:
-        fixed_solution = float(solution.replace('=', '').replace(' ', ''))
-    print('fixed_solution', fixed_solution)
-    if isinstance(result,list):
-        for res in result:
-            if isinstance(fixed_solution, dict):
-                for sol in fixed_solution.keys():
-                    if fixed_solution[sol] == float(res):
-                        score += .5
+        print('fixed_solution', fixed_solution)
+        if isinstance(result,list):
+            for res in result:
+                if isinstance(fixed_solution, dict):
+                    for sol in fixed_solution.keys():
+                        if fixed_solution[sol] == float(format(float(res), '.2f')):
+                            score += .5
 
-            if fixed_solution == float(res):
-                score += .5
-    elif isinstance(result, dict):
-        for res in result.keys():
-            if isinstance(fixed_solution, dict):
-                for sol in fixed_solution.keys():
-                    if sol == res and fixed_solution[sol] == float(result[res]):
-                        score +=1
-            else:
-                if fixed_solution == float(result[res]):
-                    score += 1
+                if fixed_solution == float(format(float(res), '.2f')):
+                    score += .5
+        elif isinstance(result, dict):
+            for res in result.keys():
+                if isinstance(fixed_solution, dict):
+                    for sol in fixed_solution.keys():
+                        if sol == res and fixed_solution[sol] == format(float(result[res]), '.2f'):
+                            score +=1
+                else:
+                    if fixed_solution == float(format(float(result[res]), '.2f')):
+                        score += 1
 
-    else:
-        if float(solution) == float(result):
-            score += 1
-    print('SCORE:', score)
-    return score
+        else:
+            if float(solution) == float(format(float(result), '.2f')):
+                score += 1
+        print('SCORE:', score)
+        return score
+    except:
+        return -1
 
 # Find the most inner brackets
 # Returns sub_list of components, start and stop indexes in og list
@@ -107,18 +110,6 @@ def brackets(components):
     sub_comps = components[open+1:close]
     return sub_comps, open, close+1
     
-# Operate all Powers (**) in expression
-# def power_exp(comps:list):
-#     new_comps = []
-#     i = -1
-#     powers_count = comps.count('^')
-#     for j in range(powers_count):
-#         i = comps.index('^', i+1)
-#         result = comps[i-1] ** comps[i+1]
-#         if result:
-#             new_comps = comps[:i-1] + [result] + comps[i+min(2, len(comps)-1):]
-#     return new_comps
-
 
 def deconstruct(expression:str): 
     # Assign vars set to count distinct vars
@@ -161,15 +152,19 @@ def deconstruct(expression:str):
                         vars.add(var.name)
 
                 current_comp = ''
+                if char == '(':
+                    if comps[-1] not in OPERATORS:
+                        comps.append('*')
                 comps.append(char)
                 
                 if char in OPERATORS:
                     has_operator = True
                 if char == '=':
                     equal_exists = True
-                
+            
             else:
                 raise ValueError()
+              
     except ValueError:
         return 'ValueError', []
         
@@ -202,7 +197,7 @@ def deconstruct(expression:str):
 # Convert result 
 def int_result(result):
     try:
-        result = float(result)
+        result = float(format(float(result), '.2f'))
         if result.is_integer():
             return str(int(result))
         else: 
@@ -221,7 +216,7 @@ def fix_result(result:list):
                 for key in result[i].keys():
                     fixed_result += f"{key} = {int_result(result[i][key])}"
             else:
-                fixed_result += str(float(result[i]))
+                fixed_result += int_result((result[i]))
             fixed_result += " | " if i < result_count - 1 else ''
     elif isinstance(result, dict):
         for key in result.keys():
