@@ -14,9 +14,6 @@ async def solve(request:Request):
     try:
         req = await request.json()
         expression, solution, username = req.values()
-        # req = request.get('user_id')   
-        # data = req.decode()
-        # print('DATA:', req)
 
         # Set response vars
         result = 0

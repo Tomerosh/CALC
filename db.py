@@ -8,7 +8,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 # INSERT DATABASE INFO HERE #
 DB_NAME = 'postgres'
 DB_USERNAME = 'postgres'
-DB_PASSWORD = '2409'
+DB_PASSWORD = '29022024'
 
 # Define db engine and session
 engine = create_engine(f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@localhost:5432/{DB_NAME}", echo=True)

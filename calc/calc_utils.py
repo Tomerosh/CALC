@@ -79,23 +79,23 @@ def calc_score(result, solution):
             for res in result:
                 if isinstance(fixed_solution, dict):
                     for sol in fixed_solution.keys():
-                        if fixed_solution[sol] == float(res):
+                        if fixed_solution[sol] == float(format(float(res), '.2f')):
                             score += .5
 
-                if fixed_solution == float(res):
+                if fixed_solution == float(format(float(res), '.2f')):
                     score += .5
         elif isinstance(result, dict):
             for res in result.keys():
                 if isinstance(fixed_solution, dict):
                     for sol in fixed_solution.keys():
-                        if sol == res and fixed_solution[sol] == float(result[res]):
+                        if sol == res and fixed_solution[sol] == format(float(result[res]), '.2f'):
                             score +=1
                 else:
-                    if fixed_solution == float(result[res]):
+                    if fixed_solution == float(format(float(result[res]), '.2f')):
                         score += 1
 
         else:
-            if float(solution) == float(result):
+            if float(solution) == float(format(float(result), '.2f')):
                 score += 1
         print('SCORE:', score)
         return score
@@ -152,15 +152,19 @@ def deconstruct(expression:str):
                         vars.add(var.name)
 
                 current_comp = ''
+                if char == '(':
+                    if comps[-1] not in OPERATORS:
+                        comps.append('*')
                 comps.append(char)
                 
                 if char in OPERATORS:
                     has_operator = True
                 if char == '=':
                     equal_exists = True
-                
+            
             else:
                 raise ValueError()
+              
     except ValueError:
         return 'ValueError', []
         
@@ -212,7 +216,7 @@ def fix_result(result:list):
                 for key in result[i].keys():
                     fixed_result += f"{key} = {int_result(result[i][key])}"
             else:
-                fixed_result += str(float(result[i]))
+                fixed_result += int_result((result[i]))
             fixed_result += " | " if i < result_count - 1 else ''
     elif isinstance(result, dict):
         for key in result.keys():
