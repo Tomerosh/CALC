@@ -66,10 +66,8 @@ pip install fastapi uvicorn sqlalchemy "psycopg[binary]" jinja2 python-multipart
 
 ### Specify DB Credentials
 
-```
 - Open db.py
 - Edit DB_NAME, DB_USERNAME & DB_PASSWORD according to your local postgresql db information.
-```
 
 ### Run the Application
 
