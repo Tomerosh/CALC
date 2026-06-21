@@ -1,10 +1,8 @@
-# CALC++
+<h1 align="center">CALC++</h1>
 
 <p align="center">
   <img src="https://github.com/tomerosh/middle_project/blob/master/Screenshot.jpeg?" width="900">
 </p>
-
-<h1 align="center">CALC++</h1>
 
 <p align="center">
   Mathematical Expression Solver • FastAPI • PostgreSQL
@@ -47,8 +45,6 @@ CALC++ is a backend web application designed to solve mathematical expressions, 
 - Jinja2
 - SymPy
 - bcrypt
-
-### Additional Dependencies
 - python-multipart
 
 ---
