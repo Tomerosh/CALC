@@ -54,7 +54,7 @@ CALC++ is a backend web application designed to solve mathematical expressions, 
 ### Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/tomerosh/CALC
 cd calc
 ```
 
