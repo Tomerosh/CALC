@@ -6,9 +6,9 @@ from datetime import datetime, timezone
 from sqlalchemy.ext.hybrid import hybrid_property
 
 # INSERT DATABASE INFO HERE #
-DB_NAME = 'postgres'
-DB_USERNAME = 'postgres'
-DB_PASSWORD = '29022024'
+DB_NAME = 'postgres' # Enter db name
+DB_USERNAME = 'postgres' # Enter username
+DB_PASSWORD = 'ENTER_DB_PASSWORD'
 
 # Define db engine and session
 engine = create_engine(f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@localhost:5432/{DB_NAME}", echo=True)
