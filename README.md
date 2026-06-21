@@ -1,7 +1,7 @@
 <h1 align="center">CALC++</h1>
 
 <p align="center">
-  <img src="https://github.com/tomerosh/middle_project/blob/master/Screenshot.jpeg?" width="900">
+  <img src="https://github.com/tomerosh/CALC/blob/master/Screenshot.jpeg?" width="900">
 </p>
 
 <p align="center">
