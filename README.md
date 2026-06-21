@@ -1,7 +1,7 @@
 <h1 align="center">CALC++</h1>
 
 <p align="center">
-  <img src="https://github.com/tomerosh/middle_project/blob/master/Screenshot.jpeg?" width="900">
+  <img src="https://github.com/tomerosh/CALC/blob/master/Screenshot.jpeg?" width="900">
 </p>
 
 <p align="center">
@@ -55,7 +55,7 @@ CALC++ is a backend web application designed to solve mathematical expressions, 
 
 ```bash
 git clone <repository-url>
-cd calculator-plus-plus
+cd calc
 ```
 
 ### Install Dependencies
@@ -63,6 +63,11 @@ cd calculator-plus-plus
 ```bash
 pip install fastapi uvicorn sqlalchemy "psycopg[binary]" jinja2 python-multipart sympy bcrypt
 ```
+
+### Specify DB Credentials
+
+- Open db.py
+- Edit DB_NAME, DB_USERNAME & DB_PASSWORD according to your local postgresql db information.
 
 ### Run the Application
 
