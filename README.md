@@ -55,7 +55,7 @@ CALC++ is a backend web application designed to solve mathematical expressions, 
 
 ```bash
 git clone <repository-url>
-cd calculator-plus-plus
+cd calc
 ```
 
 ### Install Dependencies
